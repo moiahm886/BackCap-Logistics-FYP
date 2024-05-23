@@ -1,0 +1,113 @@
+﻿@model Driver
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Vehicle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin-left: 100px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            z-index: 1
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .vehicle-form {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+
+        .Extra-container {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+            .Extra-container h2 {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+
+        .Extra-form-group {
+            margin-bottom: 15px;
+        }
+
+            .Extra-form-group label {
+                display: block;
+                font-weight: bold;
+            }
+
+            .Extra-form-group input[type="number"] {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-sizing: border-box;
+            }
+    </style>
+</head>
+@Html.Partial("_Sidebar")
+<body>
+    <h1>Update Driver</h1>
+    <form asp-controller="Driver" asp-action="UpdatingDriver" method="post" class="vehicle-form">
+        <input type="hidden" name="DriverID" value="@Model.DriverID" />
+        <div class="form-group">
+            <label for="Name">Driver Name:</label>
+            <input type="text" id="Name" name="Name" value="@Model.Name">
+        </div>
+        <div class="form-group">
+            <label for="ExperienceinYears">Experience in Years:</label>
+            <input type="number" id="ExperienceinYears" name="ExperienceinYears" value="@Model.ExperienceinYears">
+        </div>
+        <div class="form-group">
+            <label for="licenseNumber">license Number:</label>
+            <input type="number" id="licenseNumber" name="licenseNumber" value="@Model.licenseNumber">
+        </div>
+        <button type="submit">Update</button>
+    </form>
+</body>
+</html>

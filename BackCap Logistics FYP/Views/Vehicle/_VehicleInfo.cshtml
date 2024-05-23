@@ -1,0 +1,133 @@
+﻿@model List<Vehicle>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Details</title>
+    <style>
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0 0 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .container-capacity {
+            font-size: 14px;
+        }
+
+        .button-column {
+            width: 150px;
+            text-align: center;
+        }
+
+        .button {
+            padding: 8px 12px;
+            margin-right: 5px;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .update-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+@Html.Partial("_Sidebar")
+<body>
+    <div class="container">
+        <h1>Vehicle Details</h1>
+        <form method="get" asp-controller="Vehicle" asp-action="AddVehicle">
+            <button class="button add-order-button" type="submit" style="float: right;">Add Order</button>
+        </form>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Container Capacity</th>
+                        <th>Horsepower (Hp)</th>
+                        <th>Engine Capacity</th>
+                        <th>Model</th>
+                        <th>Max Speed</th>
+                        <th>Permit Number</th>
+                        <th>Number Plate</th>
+                        <th class="button-column">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var vehicle in @Model)
+                    {
+                        <tr>
+                            <td>@vehicle.Category</td>
+                            <td class="container-capacity">
+                                <strong>Dimensions:</strong> <br>
+                                Height: @vehicle.CaintainerCapacity.Height <br>
+                                Width: @vehicle.CaintainerCapacity.Width <br>
+                                Length: @vehicle.CaintainerCapacity.Length <br>
+                                <strong>Max Weight:</strong> @vehicle.CaintainerCapacity.MaxWeight
+                            </td>
+                            <td>@vehicle.Hp</td>
+                            <td>@vehicle.EngineCapacity</td>
+                            <td>@vehicle.Model</td>
+                            <td>@vehicle.MaxSpeed</td>
+                            <td>@vehicle.Permit.PermitNumber</td>
+                            <td>@vehicle.Permit.NumberPlate</td>
+                            <td class="button-column">
+                                <form asp-controller="Vehicle" asp-action="UpdateVehicle">
+                                    <input type="hidden" name="VehicleId" value="@vehicle.VehicleId" />
+                                    <button type="submit" class="button update-button">Update</button>
+                                </form>
+                            </td>
+                            <td class="button-column">
+                                <form asp-controller="Organization" asp-action="DeleteOrganization">
+                                    <input type="hidden" name="VehicleId" value="@vehicle.VehicleId" />
+                                    <button type="submit" class="button delete-button">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

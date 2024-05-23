@@ -1,0 +1,74 @@
+﻿@{
+    string id = ViewBag.federatedid;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        background-color:aliceblue;
+    }
+
+    h2 {
+        color: #333;
+    }
+
+    p {
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .verify-btn {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .verify-btn:hover {
+            background-color: #0056b3;
+        }
+
+</style>
+<script>
+    // Function to reload the page after a specified delay
+    function reloadPageAfterDelay() {
+        setTimeout(function () {
+            location.reload();
+        }, 5000); // Delay in milliseconds (e.g., 5000ms = 5 seconds)
+    }
+
+    // Call the function when the page loads
+    window.onload = reloadPageAfterDelay;
+</script>
+<body>
+    <div>
+        <form asp-controller="Authentication" asp-action="SendVerificationEmail" method="submit">
+        <input type="hidden" name="Token" value="@id" />
+        <h2>Please Verify Your Email</h2>
+        <p>A verification link has been sent to your email address. Please click on the link to verify your email and complete the registration process.</p>
+        <button class="verify-btn">Verify Email</button>
+        </form>
+    </div>
+</body>
+</html>

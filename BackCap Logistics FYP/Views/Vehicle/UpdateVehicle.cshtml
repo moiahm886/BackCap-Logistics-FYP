@@ -1,0 +1,151 @@
+﻿@model Vehicle
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Vehicle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin-left: 100px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            z-index:1
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .vehicle-form {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+
+        .Extra-container {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+            .Extra-container h2 {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+
+        .Extra-form-group {
+            margin-bottom: 15px;
+        }
+
+            .Extra-form-group label {
+                display: block;
+                font-weight: bold;
+            }
+
+            .Extra-form-group input[type="number"] {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-sizing: border-box;
+            }
+    </style>
+</head>
+@Html.Partial("_Sidebar")
+<body>
+    <h1>Update Vehicle</h1>
+    <form asp-controller="Vehicle" asp-action="UpdatingVehicle" method="post" class="vehicle-form">
+        <input type="hidden" name="VehicleId" value="@Model.VehicleId" />
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <input type="text" id="category" name="Category" value="@Model.Category" required>
+        </div>
+        <div class="form-group">
+            <label for="hp">Horsepower:</label>
+            <input type="number" id="hp" name="Hp" value="@Model.Hp" required>
+        </div>
+        <div class="form-group">
+            <label for="engineCapacity">Engine Capacity:</label>
+            <input type="number" id="engineCapacity" name="EngineCapacity" value="@Model.EngineCapacity" required>
+        </div>
+        <div class="form-group">
+            <label for="model">Model:</label>
+            <input type="text" id="model" name="Model" value="@Model.Model" required>
+        </div>
+        <div class="form-group">
+            <label for="maxSpeed">Max Speed:</label>
+            <input type="number" id="maxSpeed" name="MaxSpeed" value="@Model.MaxSpeed" required>
+        </div>
+        <div class="Extra-container">
+            <h2>Box Container</h2>
+            <div class="form-group">
+                <label for="height">Height:</label>
+                <input type="number" id="height" name="CaintainerCapacity.Height" value="@Model.CaintainerCapacity.Height" required>
+            </div>
+            <div class="form-group">
+                <label for="width">Width:</label>
+                <input type="number" id="width" name="CaintainerCapacity.Width" value="@Model.CaintainerCapacity.Width" required>
+            </div>
+            <div class="form-group">
+                <label for="length">Length:</label>
+                <input type="number" id="length" name="CaintainerCapacity.Length" value="@Model.CaintainerCapacity.Length" required>
+            </div>
+            <div class="form-group">
+                <label for="maxWeight">Max Weight:</label>
+                <input type="number" id="maxWeight" name="CaintainerCapacity.MaxWeight" value="@Model.CaintainerCapacity.MaxWeight" required>
+            </div>
+        </div>
+        <div class="Extra-container">
+            <h2>Permit Detail</h2>
+            <div class="form-group">
+                <label for="PermitNumber">Permit Number:</label>
+                <input type="text" id="PermitNumber" name="Permit.PermitNumber" value="@Model.Permit.PermitNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="NumberPlate">Number Plate:</label>
+                <input type="text" id="NumberPlate" name="Permit.NumberPlate" value="@Model.Permit.NumberPlate" required>
+            </div>
+        </div>
+        <button type="submit">Update</button>
+    </form>
+</body>
+</html>

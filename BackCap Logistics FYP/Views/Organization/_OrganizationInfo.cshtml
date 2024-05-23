@@ -1,0 +1,130 @@
+﻿@model List<Organization>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization Details</title>
+    <style>
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0 0 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .container-capacity {
+            font-size: 14px;
+        }
+
+        .button-column {
+            width: 150px;
+            text-align: center;
+        }
+
+        .button {
+            padding: 8px 12px;
+            margin-right: 5px;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .update-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .button:hover {
+            background-color: #555;
+        }
+
+        .add-order-button {
+            float: right;
+            background-color: gray;
+            margin-bottom: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Organization Details</h1>
+        <form method="get" asp-controller="Organization" asp-action="AddOrganization">
+            <button class="button add-order-button" type="submit" style="float: right;">Add Organization</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Number of Vehicles</th>
+                    <th>Number of Drivers</th>
+                    <th>Delayed Deliveries</th>
+                    <th>On Time Delivery</th>
+                    <th>Vehicle On Route</th>
+                    <th class="button-column">Update</th>
+                    <th class="button-column">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var organization in Model)
+                {
+                    <tr>
+                        <td>@organization.Name</td>
+                        <td>@organization.Description</td>
+                        <td>@organization.NumberofVehicle</td>
+                        <td>@organization.NumberofDrivers</td>
+                        <td>@organization.DelayedDeliveries</td>
+                        <td>@organization.OnTimeDelivery</td>
+                        <td>@organization.VehicleOnRoute</td>
+                        <td class="button-column">
+                            <form asp-controller="Organization" asp-action="UpdateOrganization">
+                                <input type="hidden" name="OrganizationId" value="@organization.OrganizationId" />
+                                <button type="submit" class="button update-button">Update</button>
+                            </form>
+                        </td>
+                        <td class="button-column">
+                            <form asp-controller="Organization" asp-action="DeleteOrganization">
+                                <input type="hidden" name="OrganizationId" value="@organization.OrganizationId" />
+                                <button type="submit" class="button delete-button">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

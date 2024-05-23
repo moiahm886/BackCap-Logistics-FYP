@@ -1,0 +1,148 @@
+﻿@model List<Order>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <style>
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0 0 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .container-capacity {
+            font-size: 14px;
+        }
+
+        .button-column {
+            width: 150px;
+            text-align: center;
+        }
+
+        .button {
+            padding: 8px 12px;
+            margin-right: 5px;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .map-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .update-button {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .button:hover {
+            background-color: #555;
+        }
+
+        .add-order-button {
+            float: right;
+            background-color: gray;
+            margin-bottom:2px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Details</h1>
+        <form method="get" asp-controller="Order" asp-action="AddOrder">
+            <button class="button add-order-button" type="submit" style="float: right;">Add Order</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Source Latitude</th>
+                    <th>Source Longitude</th>
+                    <th>Destination Latitude</th>
+                    <th>Destination Longitude</th>
+                    <th>Order Status</th>
+                    <th class="button-column">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.Source.Latitude</td>
+                        <td>@order.Source.Longitude</td>
+                        <td>@order.Destination.Latitude</td>
+                        <td>@order.Destination.Longitude</td>
+                        <td>@order.Status</td>
+                        @if (order.Status == "Pending")
+                        {
+                            <td class="button-column">
+
+                                <form asp-controller="Order" asp-action="UpdatingOrder">
+                                    <input type="hidden" name="OrderId" value="@order.OrderId" />
+                                    <button type="submit" class="button update-button">Update</button>
+                                </form>
+
+                            </td>
+                        }
+                        @if (order.Status == "Pending")
+                        {
+                            <td>
+
+                                <form asp-controller="Order" asp-action="RejectOrder">
+                                    <input type="hidden" name="OrderId" value="@order.OrderId" />
+                                    <button type="submit" class="button update-button">Reject</button>
+                                </form>
+
+                            </td>
+                        }
+                        <td class="button-column">
+                            @if (order.Status == "Accepted")
+                            {
+                                <form asp-controller="Map" asp-action="DisplayMap">
+                                    <input type="hidden" name="SourceLatitude" value="@order.Source.Latitude" />
+                                    <input type="hidden" name="SourceLongitude" value="@order.Source.Longitude" />
+                                    <input type="hidden" name="DestinationLatitude" value="@order.Destination.Latitude" />
+                                    <input type="hidden" name="DestinationLongitude" value="@order.Destination.Longitude" />
+                                    <button type="submit" class="button map-button">Map</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

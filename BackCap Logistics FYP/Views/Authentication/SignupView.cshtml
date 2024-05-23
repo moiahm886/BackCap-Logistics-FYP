@@ -1,0 +1,115 @@
+﻿@model Signup
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 400px;
+        margin: 50px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .btn:hover {
+            background-color: #0056b3;
+            color: darkred
+        }
+
+    .text-danger {
+        color: red;
+    }
+
+    .btn-link {
+        display: block;
+        margin-top: 10px;
+        background-color: #007bff;
+        text-align: center;
+        color: #fff;
+        text-decoration: none;
+    }
+</style>
+
+<h1>Signup</h1>
+<form asp-controller= "Authentication" asp-action="Registration" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Username"></label>
+        <input asp-for="Username" class="form-control" />
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword"></label>
+        <input asp-for="ConfirmPassword" class="form-control" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone"></label>
+        <input asp-for="Phone" class="form-control" type="number" pattern="[0-9]*" oninput="checkPhoneNumber()" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-dark">Sign Up</button>
+    <a href="/Authentication/Login" class="btn btn-link">Already have an account? Login</a>
+</form>
+<script>
+    function checkPhoneNumber() {
+        var phoneNumberInput = document.getElementById('Phone');
+        var phoneNumber = phoneNumberInput.value.toString();
+        if (!phoneNumber.startsWith('03')) {
+            phoneNumberInput.value = '03' + phoneNumber;
+        }
+    }
+</script>

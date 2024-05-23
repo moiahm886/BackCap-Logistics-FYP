@@ -1,0 +1,25 @@
+﻿@model List<Vehicle>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization Details</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin-left: 100px;
+        padding: 20px;
+        background-color: #f4f4f4;
+        z-index:1;
+    }
+</style>
+@Html.Partial("_Sidebar")
+<body>
+    <div>
+        <partial name="_VehicleInfo" model="@Model" />
+    </div>
+</body>
+</html>

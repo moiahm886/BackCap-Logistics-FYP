@@ -1,0 +1,97 @@
+﻿@model Map
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Real-Time Location, Route, and Distance Matrix Map</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<style>
+    body {
+        margin-left: 100px;
+        padding: 20px;
+        z-index: 1
+    }
+</style>
+@Html.Partial("_Sidebar")
+<body onload="calculateRoute()">
+    <div id="map"></div>
+    <div id="distance-matrix"></div>
+    <script>
+        let map;
+        let directionsService;
+        let directionsRenderer;
+        let distanceMatrixService;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: -34.397, lng: 150.644 },
+                zoom: 8,
+            });
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setMap(map);
+            distanceMatrixService = new google.maps.DistanceMatrixService();
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            const latLng = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+            map.setCenter(latLng);
+            new google.maps.Marker({
+                position: latLng,
+                map: map,
+                title: "Your Location"
+            });
+            var sourceaddress = new google.maps.LatLng(@Model.SourceLatitude, @Model.SourceLongitude);
+        }
+
+        function calculateRoute() {
+            const source = new google.maps.LatLng(@Model.SourceLatitude, @Model.SourceLongitude);
+            const destination = new google.maps.LatLng(@Model.DestinationLatitude, @Model.DestinationLongitude);
+            directionsService.route(
+                {
+                    origin: source,
+                    destination: destination,
+                    travelMode: google.maps.TravelMode.DRIVING,
+                },
+                (response, status) => {
+                    if (status === "OK") {
+                        directionsRenderer.setDirections(response);
+                        distanceMatrixService.getDistanceMatrix({
+                            origins: [source],
+                            destinations: [destination],
+                            travelMode: google.maps.TravelMode.DRIVING,
+                        }, (response, status) => {
+                            if (status === "OK") {
+                                document.getElementById("distance-matrix").innerHTML = `Distance: ${response.rows[0].elements[0].distance.text}, Duration: ${response.rows[0].elements[0].duration.text}`;
+                            } else {
+                                window.alert("Distance matrix request failed due to " + status);
+                            }
+                        });
+                    } else {
+                        window.alert("Directions request failed due to " + status);
+                    }
+                }
+            );
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoxf4FnsvVAfqYCCHx71PSUVwAJcSf7m8&callback=initMap"
+            async defer></script>
+</body>
+</html>

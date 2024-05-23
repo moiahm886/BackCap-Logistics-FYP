@@ -1,0 +1,60 @@
+﻿<style>
+    .sidebar {
+        width: 100px;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #f8f9fa; /* Light background color */
+        overflow-x: hidden;
+        padding-top: 20px;
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 20px;
+            font-size: 16px; /* Font size */
+            color: #343a40; /* Text color */
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+            .sidebar a:hover {
+                background-color: #e9ecef; /* Background color on hover */
+            }
+
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        color: #343a40;
+        cursor: pointer;
+    }
+
+        .close-btn:hover {
+            color: #6c757d; /* Lighter text color on hover */
+        }
+
+</style>
+
+<div class="sidebar">
+    <ul>
+        <li><a asp-controller="Admin" asp-action="HomePage">Home</a></li>
+        <li><a asp-controller="Organization" asp-action="DisplayOrganizations">Organization</a></li>
+        <li><a asp-controller="Driver" asp-action="DisplayDrivers">Driver</a></li>
+        <li><a asp-controller="Vehicle" asp-action="DisplayVehicles">Vehicle</a></li>
+        <li><a asp-controller="Order" asp-action="DisplayOrders">Order</a></li>
+        <li><a asp-controller="Authentication" asp-action="Logout">Sign Out</a></li>
+    </ul>
+</div>
