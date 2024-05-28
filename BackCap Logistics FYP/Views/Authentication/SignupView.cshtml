@@ -1,115 +1,124 @@
-﻿@model Signup
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-    }
+﻿<!DOCTYPE html>
+<html lang="en">
 
-    .container {
-        max-width: 400px;
-        margin: 50px auto;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    label {
-        display: block;
-        font-weight: bold;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="number"] {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-    }
-
-    .btn {
-        width: 100%;
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        background-color: #007bff;
-        color: #fff;
-        cursor: pointer;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-        .btn:hover {
-            background-color: #0056b3;
-            color: darkred
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet">
+    <title>BackCAPS Logistics</title>
+    <style>
+        body {
+            background-color: #FFF8F7;
         }
 
-    .text-danger {
-        color: red;
-    }
-
-    .btn-link {
-        display: block;
-        margin-top: 10px;
-        background-color: #007bff;
-        text-align: center;
-        color: #fff;
-        text-decoration: none;
-    }
-</style>
-
-<h1>Signup</h1>
-<form asp-controller= "Authentication" asp-action="Registration" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="form-group">
-        <label asp-for="Username"></label>
-        <input asp-for="Username" class="form-control" />
-        <span asp-validation-for="Username" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="ConfirmPassword"></label>
-        <input asp-for="ConfirmPassword" class="form-control" />
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Phone"></label>
-        <input asp-for="Phone" class="form-control" type="number" pattern="[0-9]*" oninput="checkPhoneNumber()" />
-        <span asp-validation-for="Phone" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-dark">Sign Up</button>
-    <a href="/Authentication/Login" class="btn btn-link">Already have an account? Login</a>
-</form>
-<script>
-    function checkPhoneNumber() {
-        var phoneNumberInput = document.getElementById('Phone');
-        var phoneNumber = phoneNumberInput.value.toString();
-        if (!phoneNumber.startsWith('03')) {
-            phoneNumberInput.value = '03' + phoneNumber;
+        .card {
+            box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.23);
         }
-    }
-</script>
+
+        .form-floating {
+            position: relative;
+        }
+
+        .icon {
+            position: absolute;
+            top: calc(20%);
+            left: 1.25rem;
+        }
+
+        .form-floating label,
+        .form-floating .form-control {
+            left: .5rem;
+            padding-left: 3.5rem;
+        }
+
+        .form-control {
+            background-color: #F2E5E3;
+        }
+
+        h1 {
+            font-family: Poppins;
+            font-weight: 700;
+        }
+
+        a {
+            color: black;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+            a span {
+                text-decoration: underline;
+            }
+    </style>
+</head>
+
+<body>
+    <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="row">
+            <div class="col">
+                <div>
+                    <div class="col d-flex justify-content-center align-items-center flex-column">
+                        <img src="/Assets/signup_background.png" class="my-5" alt="login_background" style="width: 712px;">
+                        <img src="/Assets/backcaps.png" alt="logo" style="width: 310px;">
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <section class="position-relative px-5 py-4 py-xl-5">
+                    <div class="card" style="border-radius: 44px;">
+                        <span class="d-flex justify-content-center mt-5">
+                            <h1>Owner Signup</h1>
+                        </span>
+                        <form asp-controller="Authentication" asp-action="Registration" method="post" class="m-5 px-5">
+                            <div class="form-floating mb-3">
+                                <i class="icon bi bi-person-fill" style="font-size: 24px;"></i>
+                                <input class="form-control" style="border-radius: 15px;" name="FullName" type="name" id="name" placeholder="Full Name">
+                                <label for="username">Full Name</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <i class="icon bi bi-person-badge-fill" style="font-size: 24px;"></i>
+                                <input class="form-control" style="border-radius: 15px;" type="text" name="Username" id="username" placeholder="Unique ID/ Username">
+                                <label for="username">Unique ID/ Username</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <i class="icon bi bi-envelope-fill" style="font-size: 24px;"></i>
+                                <input class="form-control" style="border-radius: 15px;" name="Email" type="email" id="email" placeholder="Email">
+                                <label for="username">Email</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <i class="icon bi bi-lock-fill" style="font-size: 24px;"></i>
+                                <input class="form-control" style="border-radius: 15px;" name="Password" type="password" id="password"
+                                       placeholder="Password">
+                                <label for="username">Password</label>
+                            </div>
+                            <div class="form-floating d-flex justify-content-center">
+                                <input type="submit" class="btn btn-danger mt-3" style="width: 200px; height: 60px; border-radius: 20px; background-color: #C00012;" id="submit" value="Sign Up">
+                            </div>
+                            <div>
+                                <span class="d-flex justify-content-center m-2"><a asp-controller="Authentication" asp-action="Login">Already have an account? <span>Sign in</span></a></span>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="/Assets//scripts//Popper.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+            crossorigin="anonymous"></script>
+</body>
+
+</html>
