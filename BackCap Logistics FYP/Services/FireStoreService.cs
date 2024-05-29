@@ -1,4 +1,6 @@
-﻿using Google.Cloud.Firestore;
+﻿using BackCap_Logistics_FYP.Models;
+using Google.Cloud.Firestore;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Reflection;
 namespace BackCap_Logistics_FYP.Services
@@ -40,19 +42,13 @@ namespace BackCap_Logistics_FYP.Services
                 throw;
             }
         }
-        public async Task Add(T t)
+        public async Task Add(T t,string address,string id)
         {
             try
             {
-                CollectionReference collectionReference = firestoreDb.Collection("Organizations");
-                DocumentReference documentReference = await collectionReference.AddAsync(t);
-                string documentId = documentReference.Id;
-                PropertyInfo property = typeof(T).GetProperty("OrganizationId");
-                if (property != null && property.CanWrite)
-                {
-                    property.SetValue(t, documentId);
-                }
-                await documentReference.UpdateAsync("OrganizationId", documentId);
+                CollectionReference collectionReference = firestoreDb.Collection(address);
+                DocumentReference documentReference = collectionReference.Document(id);
+                await documentReference.SetAsync(t);
             }
             catch (Exception ex)
             {
@@ -89,5 +85,75 @@ namespace BackCap_Logistics_FYP.Services
             DocumentReference documentReference = firestoreDb.Collection(path).Document(id);
             await documentReference.DeleteAsync();
         }
+        public async Task<int> CountDocuments(string path)
+        {
+            try
+            {
+                Query query = firestoreDb.Collection(path);
+                QuerySnapshot documentSnapshots = await query.GetSnapshotAsync();
+                return documentSnapshots.Count;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while counting documents in Firestore: {ex}");
+                throw;
+            }
+        }
+        public async Task<bool> DocumentExists(string documentId, string collectionPath)
+        {
+            try
+            {
+                DocumentReference documentReference = firestoreDb.Collection(collectionPath).Document(documentId);
+                DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
+                return documentSnapshot.Exists;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while checking if document exists in Firestore: {ex}");
+                throw;
+            }
+        }
+        public async Task AddVehicleToOrganization(string organizationId, Vehicle vehicle)
+        {
+            try
+            {
+                DocumentReference organizationDocRef = firestoreDb.Collection("Organizations").Document(organizationId);
+                DocumentSnapshot snapshot = await organizationDocRef.GetSnapshotAsync();
+
+                if (snapshot.Exists)
+                {
+                    Organization organization = snapshot.ConvertTo<Organization>();
+
+                    if (organization.Vehicles == null)
+                    {
+                        organization.Vehicles = new List<Vehicle>();
+                    }
+                    organization.Vehicles.Add(vehicle);
+                    await organizationDocRef.SetAsync(organization, SetOptions.Overwrite);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while adding the vehicle: {ex.Message}");
+            }
+        }
+        public async Task<int> GetVehicleCount(string organizationId)
+        {
+            try
+            {
+                DocumentReference organizationDocRef = firestoreDb.Collection("Organizations").Document(organizationId);
+                DocumentSnapshot snapshot = await organizationDocRef.GetSnapshotAsync();
+                Organization organization = snapshot.ConvertTo<Organization>();
+                int vehicleCount = organization.Vehicles?.Count ?? 0;
+                return vehicleCount;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving the vehicle count: {ex.Message}");
+            }
+            return -1;
+        }
+
     }
+
 }

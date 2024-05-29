@@ -40,8 +40,14 @@ namespace BackCap_Logistics_FYP.Controllers
             var User = await auth.GetUserAsync(check);
             if (User.IsEmailVerified)
             {
-                Console.WriteLine(User.LocalId);
-                return View();
+                if (!(await DocumentExists()))
+                {
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("LoggingIn", "Authentication", new { tokens = check });
+                }
             }
             else
             {
@@ -77,7 +83,7 @@ namespace BackCap_Logistics_FYP.Controllers
 
         private async Task AddOrganizationToFirebase(Organization organization, string userId)
         {
-            await service.Add(organization);
+            await service.Add(organization,"Organizations",userId);
         }
         private async Task<Organization> GetOrganizationById(string organizationId,string localid)
         {
@@ -192,6 +198,16 @@ namespace BackCap_Logistics_FYP.Controllers
             }
 
             return RedirectToAction("UpdateOrganization", new { organization.OrganizationId });
+        }
+        public async Task<bool> DocumentExists()
+        {
+            var check = _httpContextAccessor.HttpContext.Session.GetString("_UserToken");
+            if (check == null)
+            {
+                RedirectToAction("Login", "Authentication");
+            }
+            var User = await auth.GetUserAsync(check);
+            return await service.DocumentExists(User.LocalId, "Organizations");
         }
 
     }

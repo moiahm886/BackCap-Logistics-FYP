@@ -1,14 +1,512 @@
-﻿<head>
-    <title>Home Page</title>
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet">
+    <title>BackCAPS Logistics</title>
+    <style>
+        body {
+            background-color: #FFF8F7;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        .nav-rail {
+            justify-content: center;
+            width: 80px;
+            height: 100vh;
+            background-color: #FFF8F7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+            .nav-rail a {
+                color: #4A4A4A;
+                font-size: 24px;
+                text-decoration: none;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin: 20px 0;
+            }
+
+        .icon-bg {
+            background-color: #FFDAD6;
+            width: 50px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Makes the background a pill shape */
+            font-size: 24px;
+            /* Ensure the icon size fits well within the background */
+        }
+
+        .nav-rail span.label {
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+
+        .nav-rail a:hover {
+            color: #FF6F61;
+        }
+
+        .top-nav {
+            width: calc(100% - 80px);
+            height: 70px;
+            background-color: #FFF8F7;
+            position: fixed;
+            top: 0;
+            left: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            margin: 0 20px;
+        }
+
+            .search-bar input {
+                width: 100%;
+                padding: 8px 12px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+        .btn,
+        .notification-btn {
+            background-color: white;
+            border-radius: 50px;
+            border: none;
+            width: 40px;
+            height: 40px;
+            color: #4A4A4A;
+            font-size: 24px;
+            margin-right: 20px;
+        }
+
+        .notification-btn {
+            position: relative;
+        }
+
+            .notification-btn::after {
+                content: '';
+                position: absolute;
+                top: -5px;
+                right: -5px;
+                width: 10px;
+                height: 10px;
+                background-color: red;
+                border-radius: 50%;
+            }
+
+        .profile {
+            display: flex;
+            align-items: center;
+        }
+
+            .profile img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                margin-right: 10px;
+            }
+
+            .profile span {
+                font-weight: 500;
+            }
+
+        .main-content {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            margin-left: 80px;
+            margin-top: 70px;
+        }
+
+        .left-content {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .right-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .map-section {
+            background-color: #FFFFFF;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 32px;
+            height: 400px;
+        }
+
+        .status-indicators {
+            display: flex;
+            width: 500px;
+            gap: 20px;
+        }
+
+        .status-indicator {
+            flex: 1;
+            background-color: #FFDAD6;
+            /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+            padding: 8px;
+            border-radius: 31px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row;
+        }
+
+            .status-indicator span {
+                margin: 5px;
+                background-color: #FFFFFF;
+                border-radius: 40px;
+            }
+
+        .option-cards {
+            display: flex;
+            gap: 20px;
+        }
+
+            .option-cards a {
+                text-decoration: none;
+                color: black;
+            }
+
+        .option-card {
+            flex: 1;
+            background-color: #FFDAD6;
+            /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+            padding: 10px 20px 10px 20px;
+            border-radius: 31px;
+            text-align: center;
+        }
+
+            .option-card p {
+                background-color: #FFFFFF;
+                padding: 10px 10px 10px 10px;
+                border-radius: 13px;
+                text-align: center;
+                margin-bottom: 0rem;
+            }
+
+        .earnings-section {
+            background-color: #FFFFFF;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .profile-section {
+            background-color: #FEEAE6;
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            /* Make it a reference point for absolute positioning */
+        }
+
+            .profile-section .arrow-btn {
+                background-color: transparent;
+                border: none;
+                font-size: 24px;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+            }
+
+            .profile-section .left-arrow {
+                left: 0px;
+            }
+
+            .profile-section .right-arrow {
+                right: 0px;
+            }
+
+            .profile-section img {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+            }
+
+        .online-drivers {
+            background-color: #FEEAE6;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+            .online-drivers .driver {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 0;
+                border-bottom: 1px solid #ccc;
+            }
+
+                .online-drivers .driver:last-child {
+                    border-bottom: none;
+                }
+
+                .online-drivers .driver img {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                }
+
+                .online-drivers .driver span {
+                    font-weight: 500;
+                    flex: 1;
+                    margin-left: 10px;
+                }
+
+                .online-drivers .driver .actions i {
+                    color: #4A4A4A;
+                    margin-left: 10px;
+                }
+
+        .map-container {
+            position: relative;
+        }
+
+        .stacked-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+        }
+
+            .stacked-indicators .status-indicator {
+                flex-direction: column;
+                width: 150px;
+                /* Align icon and text in a row */
+                align-items: center;
+                /* Vertically center the content */
+                background-color: rgba(255, 255, 255, 0.8);
+                /* Semi-transparent background */
+                padding: 10px;
+                border-radius: 31px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+        .status-indicator p {
+            margin-bottom: 0rem;
+        }
+    </style>
 </head>
-<style>
-    body {
-        margin-left: 100px;
-        padding: 20px;
-        z-index:1
-    }
-</style>
-@Html.Partial("_Sidebar")
+
 <body>
-    <h1>Welcome</h1>
+    <div class="nav-rail">
+        <a href="#">
+            <span class="material-symbols-outlined icon-bg rounded-pill">home</span>
+            <span class="label">Home</span>
+        </a>
+        <a href="#">
+            <span class="material-symbols-outlined">local_shipping</span>
+            <span class="label">Shipping</span>
+        </a>
+        <a href="#">
+            <span class="material-symbols-outlined">orders</span>
+            <span class="label">Orders</span>
+        </a>
+        <a href="#">
+            <span class="material-symbols-outlined">package</span>
+            <span class="label">Package</span>
+        </a>
+        <a href="#">
+            <span class="material-symbols-outlined">chat</span>
+            <span class="label">Chat</span>
+        </a>
+        <a asp-controller="Authentication" asp-action="Logout">
+            <span class="material-symbols-outlined">logout</span>
+            <span class="label">Logout</span>
+        </a>
+    </div>
+
+
+    <div class="top-nav">
+        <!-- <button class="btn"><i class="bi bi-list"></i></button> -->
+        <div class="search-bar">
+            <input type="text" style="border-radius: 31px; border: 0px;" placeholder="Search Fleet">
+        </div>
+        <button class="notification-btn"><i class="bi bi-bell"></i></button>
+        <div class="profile">
+            <span>BackCAPS Logistics</span>
+            <img src="/Assets/profile.png" alt="Profile Picture">
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="left-content">
+            <div class="map-container">
+                <div class="map-section">
+                    <div id="googleMap" style="width:100%;height:100%; border-radius: 32px;"></div>
+                </div>
+                <div class="stacked-indicators">
+                    <div class="status-indicator">
+                        <span class="material-symbols-outlined">local_shipping</span>
+                        <p>12 Available</p>
+                    </div>
+                    <div class="status-indicator">
+                        <span class="material-symbols-outlined">map</span>
+                        <p>2 On Route</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-indicators">
+                <div class="status-indicator">
+                    <span class="material-symbols-outlined p-2" style="color: green;">schedule</span>
+                    <p>2 On Time</p>
+                </div>
+                <div class="status-indicator">
+                    <span class="material-symbols-outlined p-2" style="color: red;">schedule</span>
+                    <p>0 Delayed</p>
+                </div>
+                <div class="status-indicator">
+                    <span class="material-symbols-outlined p-2" style="color: green;">groups</span>
+                    <p>2 Drivers</p>
+                </div>
+            </div>
+
+            <div class="option-cards">
+                <a href="#">
+                    <div class="option-card">
+                        <img src="/Assets/Login_background.png" class="m-2" style="width: 90px;" alt="Resource Hub">
+                        <p>Resource Hub</p>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="option-card">
+                        <img src="/Assets/signup_background.png" class="m-2" style="width: 120px;" alt="Assignment">
+                        <p>Assignment</p>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="option-card">
+                        <img src="/Assets/orders.png" class="m-2" style="width: 60px;" alt="Orders">
+                        <p>Orders</p>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="option-card">
+                        <img src="/Assets/bidding.png" class="m-2" style="width: 90px;" alt="Bidding">
+                        <p>Bidding</p>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="option-card">
+                        <img src="/Assets/driver.png" class="m-2" style="width: 50px;" alt="Drivers">
+                        <p>Drivers</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="earnings-section">
+                <h5>Earnings</h5>
+                <p>Rs 13,000 since 10 Nov, 2023</p>
+                <img src="https://via.placeholder.com/600x200" alt="Earnings Chart"
+                     style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+        </div>
+
+        <div class="right-content">
+            <div class="profile-section">
+                <button class="arrow-btn left-arrow"><i class="bi bi-caret-left"></i></button>
+                <img src="/Assets/profile.png" alt="Muhammad Hassaan">
+                <p>Muhammad Hassaan</p>
+                <p>PD565 495 21431211</p>
+                <button class="arrow-btn right-arrow"><i class="bi bi-caret-right"></i></button>
+            </div>
+
+            <div class="online-drivers">
+                <div class="d-flex justify-content-center flex-column align-items-center">
+                    <img src="/Assets/online_driver.png" style="width: 90px;" alt="Online drivers">
+                    <p>Online Drivers</p>
+                </div>
+                <div class="driver">
+                    <img src="/Assets/profile.png" alt="Muhammad Hassaan">
+                    <span>Muhammad Hassaan - Rating 4.5</span>
+                    <div class="actions">
+                        <i class="bi bi-telephone"></i>
+                        <i class="bi bi-chat-dots"></i>
+                        <i class="bi bi-check-circle"></i>
+                        <i class="bi bi-pencil"></i>
+                        <i class="bi bi-trash"></i>
+                    </div>
+                </div>
+                <div class="driver">
+                    <img src="/Assets/profile.png" alt="Moiz Ahmed">
+                    <span>Moiz Ahmed - Rating 4.7</span>
+                    <div class="actions">
+                        <i class="bi bi-telephone"></i>
+                        <i class="bi bi-chat-dots"></i>
+                        <i class="bi bi-check-circle"></i>
+                        <i class="bi bi-pencil"></i>
+                        <i class="bi bi-trash"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function myMap() {
+            var mapProp = {
+                center: new google.maps.LatLng(33.69385096601033, 73.06511715129574),
+                zoom: 14,
+            };
+            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoxf4FnsvVAfqYCCHx71PSUVwAJcSf7m8&callback=myMap"></script>
+    <script src="/Assets/scripts/Popper.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+            crossorigin="anonymous"></script>
 </body>
+
+</html>

@@ -1,9 +1,11 @@
 ﻿using BackCap_Logistics_FYP.Models;
+using BackCap_Logistics_FYP.Services;
 using Firebase.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Management;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -13,6 +15,7 @@ namespace BackCap_Logistics_FYP.Controllers
     {
         FirebaseAuthProvider auth;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        FireStoreService<Organization> service = new FireStoreService<Organization>();
         public AuthenticationController(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -27,7 +30,7 @@ namespace BackCap_Logistics_FYP.Controllers
         {
             try
             {
-                await auth.CreateUserWithEmailAndPasswordAsync(signup.Email, signup.Password,signup.Username,true);
+                await auth.CreateUserWithEmailAndPasswordAsync(signup.Email, signup.Password,signup.FullName,true);
                 ModelState.AddModelError(string.Empty, "Please Verify your email then login.");
                 var fbAuthLink = await auth
                                 .SignInWithEmailAndPasswordAsync(signup.Email, signup.Password);
@@ -62,7 +65,7 @@ namespace BackCap_Logistics_FYP.Controllers
             else
             {
                 _httpContextAccessor.HttpContext.Session.SetString("_UserToken", Token);
-                return RedirectToAction("HomePage", "Admin");
+                return RedirectToAction("User", "AddUser");
             }
         }
         public async Task<IActionResult> SendVerificationEmail(string Token)
@@ -81,31 +84,61 @@ namespace BackCap_Logistics_FYP.Controllers
             }
         }
 
-        public async Task<IActionResult> LoggingIn(Login login)
+        public async Task<IActionResult> LoggingIn(Login login, string tokens)
         {
+            UserController userController = new UserController(_httpContextAccessor);
+            OrganizationController organizationController = new OrganizationController(_httpContextAccessor);
+            VehicleController vehicleController = new VehicleController(_httpContextAccessor);
             try
             {
-                var fbAuthLink = await auth.SignInWithEmailAndPasswordAsync(login.Email, login.Password);
-                string token = fbAuthLink.FirebaseToken;
-                var user = await auth.GetUserAsync(fbAuthLink.FirebaseToken);
+                User user;
+                string token;
+
+                if (tokens == null)
+                {
+                    var fbAuthLink = await auth.SignInWithEmailAndPasswordAsync(login.Email, login.Password);
+                    token = fbAuthLink.FirebaseToken;
+                    user = await auth.GetUserAsync(fbAuthLink.FirebaseToken);
+                }
+                else
+                {
+                    token = tokens;
+                    user = await auth.GetUserAsync(tokens);
+                }
+
                 if (!user.IsEmailVerified)
                 {
-                    return RedirectToAction("AuthenticatingEmail", new {Token = token});
+                    return RedirectToAction("AuthenticatingEmail", new { Token = token });
                 }
-                if (token != null)
-                {   OrganizationController organizationcontroller = new OrganizationController(_httpContextAccessor);
-                    _httpContextAccessor.HttpContext.Session.SetString("_UserToken", token);
+
+                _httpContextAccessor.HttpContext.Session.SetString("_UserToken", token);
+
+                if (!(await userController.DocumentExists()))
+                {
+                    return RedirectToAction("AddUser", "User");
+                }
+                else if (!(await organizationController.DocumentExists()))
+                {
+                    return RedirectToAction("AddOrganization", "Organization");
+                }
+                else if((await vehicleController.GetCount(user.LocalId)<2))
+                {
+                    return RedirectToAction("AddVehicle", "Vehicle");
+                }
+                else
+                {
                     return RedirectToAction("HomePage", "Admin");
                 }
             }
             catch (FirebaseAuthException ex)
             {
                 var firebaseEx = JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData);
-                ModelState.AddModelError(String.Empty, firebaseEx.error.message);
+                ModelState.AddModelError(string.Empty, firebaseEx.error.message);
                 return RedirectToAction("Login");
             }
             return View();
         }
+
         private string HashEmail(string email)
         {
             using (SHA256 sha256Hash = SHA256.Create())

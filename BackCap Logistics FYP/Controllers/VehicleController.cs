@@ -1,4 +1,5 @@
 ﻿using BackCap_Logistics_FYP.Models;
+using BackCap_Logistics_FYP.Services;
 using Firebase.Auth;
 using FireSharp.Config;
 using FireSharp.Interfaces;
@@ -23,6 +24,7 @@ namespace BackCap_Logistics_FYP.Controllers
         IFirebaseClient client;
         FirebaseAuthProvider auth;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        FireStoreService<Vehicle> service = new FireStoreService<Vehicle>();
         public VehicleController(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -39,7 +41,14 @@ namespace BackCap_Logistics_FYP.Controllers
             var User = await auth.GetUserAsync(check);
             if (User.IsEmailVerified)
             {
-                Console.WriteLine(User.LocalId);
+                if ((await GetCount(User.LocalId)<2))
+                {
+                    return View();
+                }
+                else if((await GetCount(User.LocalId) == 2))
+                {
+                    return RedirectToAction("LoggingIn", "Authentication", new {tokens=check});
+                }
                 return View();
             }
             else
@@ -73,43 +82,10 @@ namespace BackCap_Logistics_FYP.Controllers
             return RedirectToAction("AddVehicle");
         }
 
-        private async Task<string> AddVehicleToFirebase(Vehicle vehicle, string userId)
+        private async Task AddVehicleToFirebase(Vehicle vehicle, string userId)
         {
-            using (var client = new FireSharp.FirebaseClient(config))
-            {
-                string vehiclePath = $"{userId}/vehicles/";
-                var vehicleresponse = await client.PushAsync(vehiclePath, new
-                {
-                    vehicle.Category,
-                    vehicle.Hp,
-                    vehicle.EngineCapacity,
-                    vehicle.Model,
-                    vehicle.MaxSpeed,
-                    vehicle.CaintainerCapacity.Width,
-                    vehicle.CaintainerCapacity.Height,
-                    vehicle.CaintainerCapacity.Length,
-                    vehicle.CaintainerCapacity.MaxWeight,
-                    vehicle.Permit.NumberPlate,
-                    vehicle.Permit.PermitNumber
-                });
-                if (vehicleresponse.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    throw new Exception("Failed to add vehicle to Firebase.");
-                }
-                string vehicleId = vehicleresponse.Result.name;
-                if (string.IsNullOrEmpty(vehicleId))
-                {
-                    throw new Exception("Failed to allocate unique VehicleId.");
-                }
-                vehicle.VehicleId = vehicleId;
-                var updateResponse = await client.SetAsync($"{userId}/vehicles/{vehicleId}", vehicle);
-
-                if (updateResponse.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    throw new Exception("Failed to update organization with OrganizationId: " + vehicleId);
-                }
-                return vehicleId;
-            }
+                vehicle.VehicleId = userId;
+                await service.AddVehicleToOrganization(userId,vehicle);
         }
 
         public async Task<Vehicle> GetVehicleById(string vehicleId, string localid)
@@ -228,6 +204,10 @@ namespace BackCap_Logistics_FYP.Controllers
                 }
             }
             return RedirectToAction("UpdateVehicle", new { vehicle.VehicleId});
+        }
+        public async Task<int> GetCount(string id)
+        {
+            return await service.GetVehicleCount(id);
         }
     }
 }

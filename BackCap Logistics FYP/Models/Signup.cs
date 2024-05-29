@@ -8,9 +8,6 @@ namespace BackCap_Logistics_FYP.Models
         [Required]
         public string FullName { get; set; }
         [Required]
-        public string Username { get; set; }
-
-        [Required]
         [EmailAddress]
         public string Email { get; set; }
 

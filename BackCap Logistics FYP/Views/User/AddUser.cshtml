@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 0px;
+            background-color: #f4f4f4;
+            margin-left: 100px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .order-form {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"],
+        input[type="datetime-local"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+
+    </style>
+</head>
+<body>
+    <h1>Add User</h1>
+    <form asp-controller="User" asp-action="AddingUser" method="post" class="order-form">
+        <div class="form-group">
+            <label for="FullName">Full Name:</label>
+            <input type="text" id="FullName" name="FullName" required>
+        </div>
+        <div class="form-group">
+            <label for="UserName">User Name:</label>
+            <input type="text" id="UserName" name="UserName" required>
+        </div>
+        <div class="form-group">
+            <label for="Email">Email:</label>
+            <input type="email" id="Email" name="Email" required>
+        </div>
+        <div class="form-group">
+            <label for="Address">Address:</label>
+            <input type="text" id="Address" name="Address" required>
+        </div>
+        <div class="form-group">
+            <label for="CNIC">CNIC:</label>
+            <input type="text" id="CNIC" name="CNIC" required>
+        </div>
+        <div class="form-group">
+            <label for="Phone">Phone:</label>
+            <input type="tel" id="Phone" name="Phone" required>
+        </div>
+        <div class="form-group">
+            <label for="UserId">User ID:</label>
+            <input type="text" id="UserId" name="UserId" required>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+    <a class="btn btn-dark" style="width:13%" onclick="goBack()">Go Back</a>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>
