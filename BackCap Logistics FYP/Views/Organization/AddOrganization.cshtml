@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
           rel="stylesheet">
     <title>BackCAPS Logistics</title>
     <style>
@@ -62,12 +62,12 @@
 </head>
 
 <body>
-    <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="container d-flex justify-content-center align-items-center" style="height: 40vh;">
         <div class="row flex-row-reverse">
             <div class="col">
                 <div>
                     <div class="col d-flex justify-content-center align-items-center flex-column">
-                        <script src="/Assets/scripts/third.mjs" type="module"></script>
+                        <script src="/Assets/third.mjs" type="module"></script>
 
                         <dotlottie-player src="https://lottie.host/d8ade14a-24b3-47a9-930a-13c6bb63ffe3/AmTsk0I3Zd.json" background="transparent" speed="1" style="width: 710px; height:710px;" loop autoplay></dotlottie-player>
                         <!-- <img src="assets/signup_background.png" class="my-5" alt="login_background" style="width: 712px;">
@@ -82,40 +82,30 @@
                             <h1>Add Organization</h1>
                         </span>
 
-                        <form method="post" class="m-5 px-5">
+                        <form asp-controller="Organization" asp-action="AddingOrganization" method="post" class="m-5 px-5">
                             <div class="form-floating mb-3">
-                                <i class="icon bi bi-buildings-fill" style="font-size: 24px;"></i>
-                                <input class="form-control" style="border-radius: 15px;" type="text" id="name" placeholder="Name">
+                                <i class="icon bi bi-building" style="font-size: 24px;"></i>
+                                <input class="form-control" style="border-radius: 15px;" type="text" id="name" name="Name" placeholder="Name" required>
                                 <label for="name">Name</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <i class="icon bi bi-telephone-fill" style="font-size: 24px;"></i>
-                                <input class="form-control" style="border-radius: 15px;" type="text" id="phone" placeholder="Phone Number">
-                                <label for="phone">Phone Number</label>
+                                <i class="icon bi bi-envelope-fill" style="font-size: 24px;"></i>
+                                <input class="form-control" style="border-radius: 15px;" type="email" id="email" name="Email" placeholder="Email" required>
+                                <label for="email">Email</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <i class="icon bi bi-person-badge-fill" style="font-size: 24px;"></i>
-                                <input class="form-control" style="border-radius: 15px;" type="text" id="cnic" placeholder="CNIC">
-                                <label for="cnic">CNIC</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <i class="icon bi bi-credit-card-2-front-fill" style="font-size: 24px;"></i>
-                                <input class="form-control" style="border-radius: 15px;" type="text" id="license" placeholder="License Number">
-                                <label for="license">License Number</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <i class="icon bi bi-geo-alt-fill" style="font-size: 24px;"></i>
-                                <input class="form-control" style="border-radius: 15px;" type="text" id="location" placeholder="Location">
-                                <label for="location">Location</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <i class="icon bi bi-body-text" style="font-size: 24px;"></i>
-                                <textarea class="form-control" style="border-radius: 15px;" type="text" id="description"
-                                          placeholder="Description" rows="5" cols="80"></textarea>
+                                <i class="icon bi bi-info-circle-fill" style="font-size: 24px;"></i>
+                                <textarea class="form-control" style="border-radius: 15px;" id="description" name="Description" placeholder="Description" rows="5" cols="80" required></textarea>
                                 <label for="description">Description</label>
                             </div>
+
+                            <div class="form-floating mb-3">
+                                <i class="icon bi bi-truck-front-fill" style="font-size: 24px;"></i>
+                                <input class="form-control" style="border-radius: 15px;" type="number" id="numberofVehicle" name="NumberofVehicle" placeholder="Number of Vehicles" required>
+                                <label for="numberofVehicle">Number of Vehicles</label>
+                            </div>
                             <div class="form-floating d-flex justify-content-center">
-                                <input type="button" class="btn btn-danger mt-3" style="width: 200px; height: 60px; border-radius: 20px; background-color: #C00012;" id="submit" value="Add Organization">
+                                <input type="submit" class="btn btn-danger mt-3" style="width: 200px; height: 60px; border-radius: 20px; background-color: #C00012;" id="submit" value="Add Organization">
                             </div>
                         </form>
                     </div>

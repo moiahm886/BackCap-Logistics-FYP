@@ -1,60 +1,26 @@
-﻿<style>
-    .sidebar {
-        width: 100px;
-        height: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: #f8f9fa; /* Light background color */
-        overflow-x: hidden;
-        padding-top: 20px;
-        z-index: 1000;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-        .sidebar ul {
-            list-style-type: none;
-            padding: 0;
-            text-align: center;
-        }
-
-        .sidebar a {
-            display: block;
-            padding: 10px 20px;
-            font-size: 16px; /* Font size */
-            color: #343a40; /* Text color */
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-
-            .sidebar a:hover {
-                background-color: #e9ecef; /* Background color on hover */
-            }
-
-    .close-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 24px;
-        color: #343a40;
-        cursor: pointer;
-    }
-
-        .close-btn:hover {
-            color: #6c757d; /* Lighter text color on hover */
-        }
-
-</style>
-
-<div class="sidebar">
-    <ul>
-        <li><a asp-controller="Admin" asp-action="HomePage">Home</a></li>
-        <li><a asp-controller="Organization" asp-action="DisplayOrganizations">Organization</a></li>
-        <li><a asp-controller="Driver" asp-action="DisplayDrivers">Driver</a></li>
-        <li><a asp-controller="Vehicle" asp-action="DisplayVehicles">Vehicle</a></li>
-        <li><a asp-controller="Order" asp-action="DisplayOrders">Order</a></li>
-        <li><a asp-controller="Authentication" asp-action="Logout">Sign Out</a></li>
-    </ul>
+﻿<div class="nav-rail">
+    <a asp-controller="Admin" asp-action="HomePage">
+        <span class="material-symbols-outlined icon-bg rounded-pill">home</span>
+        <span class="label">Home</span>
+    </a>
+    <a href="#">
+        <span class="material-symbols-outlined">local_shipping</span>
+        <span class="label">Shipping</span>
+    </a>
+    <a href="#">
+        <span class="material-symbols-outlined">orders</span>
+        <span class="label">Orders</span>
+    </a>
+    <a href="#">
+        <span class="material-symbols-outlined">package</span>
+        <span class="label">Package</span>
+    </a>
+    <a asp-action="ChatView" asp-controller="Chat">
+        <span class="material-symbols-outlined">chat</span>
+        <span class="label">Chat</span>
+    </a>
+    <a asp-controller="Authentication" asp-action="Logout">
+        <span class="material-symbols-outlined">logout</span>
+        <span class="label">Logout</span>
+    </a>
 </div>

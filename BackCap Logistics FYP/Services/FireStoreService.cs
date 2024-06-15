@@ -153,6 +153,28 @@ namespace BackCap_Logistics_FYP.Services
             }
             return -1;
         }
+        public async Task<T> Get(string Id,string path)
+        {
+            try
+            {
+                DocumentReference organizationDocRef = firestoreDb.Collection(path).Document(Id);
+                DocumentSnapshot snapshot = await organizationDocRef.GetSnapshotAsync();
+                if (snapshot.Exists)
+                {
+                    T t = snapshot.ConvertTo<T>();
+                    return t;
+                }
+                else
+                {
+                    return default(T);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
     }
 

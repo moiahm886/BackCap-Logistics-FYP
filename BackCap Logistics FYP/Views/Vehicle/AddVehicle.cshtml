@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,6 +23,8 @@
 
         .card {
             box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.23);
+            max-width: 800px;
+            margin: auto;
         }
 
         .form-floating {
@@ -55,9 +58,9 @@
             font-size: 12px;
         }
 
-            a span {
-                text-decoration: underline;
-            }
+        a span {
+            text-decoration: underline;
+        }
 
         .container {
             padding-top: 2rem;
@@ -67,39 +70,59 @@
             position: relative;
         }
 
-            .form-group i {
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                left: 10px;
-            }
+        .form-group i {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 10px;
+        }
 
-            .form-group input,
-            .form-group select {
-                padding-left: 40px;
-            }
+        .form-group input,
+        .form-group select {
+            padding-left: 40px;
+        }
 
         .vehicle-form .Extra-container h2 {
             font-size: 18px;
             margin-bottom: 10px;
         }
+
+        media (max-width: 768px) {
+            .icon {
+                top: 1rem;
+                left: 1rem;
+            }
+
+            .form-floating label,
+            .form-floating .form-control {
+                left: 1rem;
+                padding-left: 3rem;
+            }
+
+            .card {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
-        <div class="row">
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+        <div class="row w-100">
             <div class="col">
-                <section class="position-relative px-5 py-4 py-xl-5">
+                <section class="position-relative px-2 py-4 py-xl-5">
                     <div class="card" style="border-radius: 44px;">
-                        <span class="d-flex justify-content-center mt-5">
+                        <span class="d-flex justify-content-center mt-4">
                             <h1>Add Vehicle</h1>
                         </span>
-
-                        <form asp-controller="Vehicle" asp-action="AddingVehicle" method="post" class="m-5 px-5 vehicle-form">
+                        <form asp-controller="Vehicle" asp-action="AddingVehicle" method="post" class="m-3 px-3 vehicle-form">
                             <div class="form-floating mb-3 form-group">
                                 <i class="icon bi bi-gear-fill" style="font-size: 24px;"></i>
-                                <select class="form-control" id="category" name="category" required style="border-radius: 15px;">
+                                <select class="form-control" id="category" name="Category" required style="border-radius: 15px;">
                                     <option value="">Select Category</option>
                                     <option value="Pickup Truck">Pickup Truck</option>
                                     <option value="Delivery Van">Delivery Van</option>
@@ -116,17 +139,17 @@
                             </div>
                             <div class="form-floating mb-3 form-group">
                                 <i class="icon bi bi-fuel-pump-fill" style="font-size: 24px;"></i>
-                                <input class="form-control" type="number" id="engineCapacity" name="engineCapacity" placeholder="Engine Capacity" required style="border-radius: 15px;">
+                                <input class="form-control" type="number" id="engineCapacity" name="EngineCapacity" placeholder="Engine Capacity" required style="border-radius: 15px;">
                                 <label for="engineCapacity">Engine Capacity</label>
                             </div>
                             <div class="form-floating mb-3 form-group">
                                 <i class="icon bi bi-calendar-fill" style="font-size: 24px;"></i>
-                                <input class="form-control" type="number" id="model" name="model" placeholder="Model" required style="border-radius: 15px;">
+                                <input class="form-control" type="number" id="model" name="Model" placeholder="Model" required style="border-radius: 15px;">
                                 <label for="model">Model</label>
                             </div>
                             <div class="form-floating mb-3 form-group">
                                 <i class="icon bi bi-tachometer" style="font-size: 24px;"></i>
-                                <input class="form-control" type="number" id="maxSpeed" name="maxSpeed" placeholder="Max Speed" required style="border-radius: 15px;">
+                                <input class="form-control" type="number" id="maxSpeed" name="MaxSpeed" placeholder="Max Speed" required style="border-radius: 15px;">
                                 <label for="maxSpeed">Max Speed</label>
                             </div>
                             <div class="Extra-container">

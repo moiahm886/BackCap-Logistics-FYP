@@ -1,4 +1,5 @@
 ﻿using BackCap_Logistics_FYP.Models;
+using BackCap_Logistics_FYP.Services;
 using Firebase.Auth;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace BackCap_Logistics_FYP.Controllers
     {
         FirebaseAuthProvider auth;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        FireStoreService<Organization> service = new FireStoreService<Organization>();
         public AdminController(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -28,13 +30,19 @@ namespace BackCap_Logistics_FYP.Controllers
                 {
                     return RedirectToAction("Login", "Authentication");
                 }
-                return View();
+                Organization organization = await GetOrganization(user.LocalId);
+                return View(organization);
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return RedirectToAction("Login", "Authentication");
             }
+        }
+        public async Task<Organization> GetOrganization(string localId)
+        {
+            Organization organization = await service.Get(localId, "Organizations");
+            return organization;
         }
     }
 }
