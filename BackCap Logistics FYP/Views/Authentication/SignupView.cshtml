@@ -91,10 +91,21 @@
                             </div>
                             <div class="form-floating mb-3">
                                 <i class="icon bi bi-lock-fill" style="font-size: 24px;"></i>
-                                <input class="form-control" style="border-radius: 15px;" name="Password" type="password" id="password"
-                                       placeholder="Password">
-                                <label for="username">Password</label>
+                                <input class="form-control"
+                                       style="border-radius: 15px;"
+                                       name="Password"
+                                       type="password"
+                                       id="password"
+                                       placeholder="Password"
+                                       required
+                                       minlength="8"
+                                       maxlength="20"
+                                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\$\!\%\*\?&])[A-Za-z\d\$\!\%\*\?&]{8,20}"
+                                       title="Password must be 8-20 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.">
+                                <label for="password">Password</label>
                             </div>
+
+
                             <div class="form-floating d-flex justify-content-center">
                                 <input type="submit" class="btn btn-danger mt-3" style="width: 200px; height: 60px; border-radius: 20px; background-color: #C00012;" id="submit" value="Sign Up">
                             </div>

@@ -40,11 +40,12 @@ namespace BackCap_Logistics_FYP.Controllers
                 {
                     return RedirectToAction("Login", "Authentication");
                 }
+                return View();
             }
             catch (Exception) {
                 throw;
             }
-            return View();
+            
         }   
     }
 }
