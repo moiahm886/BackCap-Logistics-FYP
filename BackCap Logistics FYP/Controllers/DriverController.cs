@@ -7,12 +7,15 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Mail;
+using Google.Api;
+using BackCap_Logistics_FYP.Services;
 
 namespace BackCap_Logistics_FYP.Controllers
 {
     public class DriverController : Controller
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+        FireStoreService<Driver> service = new FireStoreService<Driver>();
         IFirebaseConfig config = new FireSharp.Config.FirebaseConfig
         {
             AuthSecret = "AIzaSyBpWMFMzJrk-MYSTiFaR86L9O2C_-IhEic",
@@ -62,6 +65,8 @@ namespace BackCap_Logistics_FYP.Controllers
                 {
                     return RedirectToAction("Login", "Authentication");
                 }
+                driver.DriverID = user.LocalId;
+                driver.Verified = true;
                 await AddDriverToFirebase(driver,user.LocalId);
                 ModelState.AddModelError(string.Empty, "Driver added successfully!");
             }
@@ -73,26 +78,9 @@ namespace BackCap_Logistics_FYP.Controllers
             return RedirectToAction("AddDriver");
         }
 
-        private async Task<string> AddDriverToFirebase(Driver driver,string userId)
+        private async Task AddDriverToFirebase(Driver driver,string userId)
         {
-            using (var client = new FireSharp.FirebaseClient(config))
-            {
-                driver.Verified = true;
-                var response = await client.PushAsync($"{userId}/drivers", driver);
-                string driverId = response.Result.name;
-                driver.DriverID = driverId;
-                if (string.IsNullOrEmpty(driverId))
-                {
-                    throw new Exception("Failed to allocate unique DriverId.");
-                }
-                var updateResponse = await client.SetAsync($"{userId}/drivers/{driverId}", driver);
-
-                if (updateResponse.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    throw new Exception("Failed to update driver with DriverId: " + driverId);
-                }
-                return driverId;
-            }
+            await service.Add(driver, "Drivers", userId);
         }
         private async Task<Driver> GetDriverById(string DriverId, string localid)
         {
@@ -113,27 +101,10 @@ namespace BackCap_Logistics_FYP.Controllers
         }
 
 
-        private async Task<List<Driver>> GetDriver(string localId)
+        public async Task<List<Driver>> GetDriver()
         {
-            using (var client = new FireSharp.FirebaseClient(config))
-            {
-                FirebaseResponse driverresponse = await client.GetAsync($"{localId}/drivers");
-                if (driverresponse.Body != "null")
-                {
-                    var drivers = new List<Driver>();
-                    dynamic data = JsonConvert.DeserializeObject<dynamic>(driverresponse.Body);
-                    var list = new List<Driver>();
-                    foreach (var item in data)
-                    {
-                        list.Add(JsonConvert.DeserializeObject<Driver>(((JProperty)item).Value.ToString()));
-                    }
-                    return list;
-                }
-                else
-                {
-                    return new List<Driver>();
-                }
-            }
+            List<Driver> drivers = await service.GetAll("Drivers");
+            return drivers;
         }
         public async Task<IActionResult> DisplayDrivers()
         {
@@ -144,7 +115,7 @@ namespace BackCap_Logistics_FYP.Controllers
                 return RedirectToAction("Login", "Authentication");
             }
 
-            List<Driver> drivers = await GetDriver(user.LocalId);
+            List<Driver> drivers = await GetDriver();
             return View(drivers);
         }
         public async Task<IActionResult> UpdateDriver(string driverId)

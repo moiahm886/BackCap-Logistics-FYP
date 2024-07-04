@@ -17,6 +17,31 @@ namespace BackCap_Logistics_FYP.Services
             projectid = "swift-area-410014";
             firestoreDb = FirestoreDb.Create(projectid);
         }
+        public async Task<List<T>> GetChat(string path,string id)
+        {
+            try
+            {
+                Query query = firestoreDb.Collection(path).Document(id).Collection("Messages");
+                QuerySnapshot documentSnapshots = await query.GetSnapshotAsync();
+                List<T> result = new List<T>();
+                foreach (var documentSnapshot in documentSnapshots)
+                {
+                    if (documentSnapshots.Count > 0)
+                    {
+                        Dictionary<String, Object> dict = documentSnapshot.ToDictionary();
+                        string json = JsonConvert.SerializeObject(dict);
+                        T t = JsonConvert.DeserializeObject<T>(json);
+                        result.Add(t);
+                    }
+                }
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         public async Task<List<T>>GetAll(string path)
         {
             try
@@ -56,7 +81,19 @@ namespace BackCap_Logistics_FYP.Services
             }
         }
 
-
+        public async Task AddChat(T t, string address, string id, string timestamp)
+        {
+            try
+            {
+                CollectionReference collectionReference = firestoreDb.Collection(address).Document(id).Collection("Messages");
+                DocumentReference documentReference = collectionReference.Document(timestamp);
+                await documentReference.SetAsync(t);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while adding document to Firestore: {ex}");
+            }
+        }
 
         public async Task<T> Update(string id,string path)
         {

@@ -6,22 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
           rel="stylesheet">
     <title>BackCAPS Logistics</title>
     <style>
         body {
             background-color: #FFF8F7;
+            font-family: 'Poppins', sans-serif;
         }
 
         .card {
             box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.23);
+            border-radius: 44px;
         }
 
         .form-floating {
@@ -30,69 +27,79 @@
 
         .icon {
             position: absolute;
-            top: calc(20%);
-            left: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 1rem;
+            z-index: 2;
         }
 
         .form-floating label,
         .form-floating .form-control {
-            left: .5rem;
-            padding-left: 3.5rem;
+            padding-left: 3rem;
         }
 
         .form-control {
             background-color: #F2E5E3;
+            border-radius: 15px;
         }
 
         h1 {
-            font-family: Poppins;
             font-weight: 700;
         }
 
         a {
             color: black;
             text-decoration: none;
-            font-size: 12px;
+            font-size: 0.875rem;
         }
 
-            a span {
-                text-decoration: underline;
+        a span {
+            text-decoration: underline;
+        }
+
+        .btn-signup {
+            background-color: #C00012;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        media (max-width: 992px) {
+            .container {
+                padding: 1rem;
             }
+            .card {
+                padding: 1rem;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
-        <div class="row">
-            <div class="col">
-                <div>
-                    <div class="col d-flex justify-content-center align-items-center flex-column">
-                        <img src="/Assets/signup_background.png" class="my-5" alt="login_background" style="width: 712px;">
-                        <img src="/Assets/backcaps.png" alt="logo" style="width: 310px;">
-                    </div>
-                </div>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="row w-100">
+            <div class="col-lg-6 d-flex justify-content-center align-items-center flex-column">
+                <img src="/Assets/signup_background.png" class="img-fluid mb-3" alt="signup_background" style="max-width: 100%;">
+                <img src="/Assets/backcaps.png" alt="logo" class="img-fluid" style="max-width: 80%;">
             </div>
-            <div class="col">
-                <section class="position-relative px-5 py-4 py-xl-5">
-                    <div class="card" style="border-radius: 44px;">
-                        <span class="d-flex justify-content-center mt-5">
-                            <h1>Owner Signup</h1>
-                        </span>
-                        <form asp-controller="Authentication" asp-action="Registration" method="post" class="m-5 px-5">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body p-4 p-md-5">
+                        <h1 class="text-center mb-4">Owner Signup</h1>
+                        <form asp-controller="Authentication" asp-action="Registration" method="post">
                             <div class="form-floating mb-3">
-                                <i class="icon bi bi-person-fill" style="font-size: 24px;"></i>
-                                <input class="form-control" style="border-radius: 15px;" name="FullName" type="name" id="name" placeholder="Full Name">
-                                <label for="username">Full Name</label>
+                                <i class="icon bi bi-person-fill fs-5"></i>
+                                <input class="form-control" name="FullName" type="text" id="name" placeholder="Full Name">
+                                <label for="name">Full Name</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <i class="icon bi bi-envelope-fill" style="font-size: 24px;"></i>
-                                <input class="form-control" style="border-radius: 15px;" name="Email" type="email" id="email" placeholder="Email">
-                                <label for="username">Email</label>
+                                <i class="icon bi bi-envelope-fill fs-5"></i>
+                                <input class="form-control" name="Email" type="email" id="email" placeholder="Email">
+                                <label for="email">Email</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <i class="icon bi bi-lock-fill" style="font-size: 24px;"></i>
+                                <i class="icon bi bi-lock-fill fs-5"></i>
                                 <input class="form-control"
-                                       style="border-radius: 15px;"
                                        name="Password"
                                        type="password"
                                        id="password"
@@ -104,26 +111,21 @@
                                        title="Password must be 8-20 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.">
                                 <label for="password">Password</label>
                             </div>
-
-
-                            <div class="form-floating d-flex justify-content-center">
-                                <input type="submit" class="btn btn-danger mt-3" style="width: 200px; height: 60px; border-radius: 20px; background-color: #C00012;" id="submit" value="Sign Up">
+                            <div class="d-flex justify-content-center mb-3">
+                                <button type="submit" class="btn btn-danger btn-signup py-3">Sign Up</button>
                             </div>
-                            <div>
-                                <span class="d-flex justify-content-center m-2"><a asp-controller="Authentication" asp-action="Login">Already have an account? <span>Sign in</span></a></span>
+                            <div class="text-center">
+                                <a asp-controller="Authentication" asp-action="Login">Already have an account? <span>Sign in</span></a>
                             </div>
                         </form>
                     </div>
-                </section>
+                </div>
             </div>
         </div>
     </div>
 
-    <script src="/Assets//scripts//Popper.js"
-            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
 </body>
 

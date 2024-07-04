@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Vehicle</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -13,14 +12,50 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
           rel="stylesheet">
+    <title>BackCAPS Logistics</title>
     <style>
         body {
             background-color: #FFF8F7;
             font-family: Poppins, Arial, sans-serif;
         }
 
+        .nav-rail {
+            justify-content: center;
+            width: 80px;
+            height: 100vh;
+            background-color: #FFF8F7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+            .nav-rail a {
+                color: #4A4A4A;
+                font-size: 24px;
+                text-decoration: none;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin: 20px 0;
+            }
+
+            .nav-rail span.label {
+                font-size: 12px;
+                font-weight: bold;
+                margin-top: 4px;
+            }
+
+            .nav-rail a:hover {
+                color: #FF6F61;
+            }
         .card {
             box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.23);
             max-width: 800px;
@@ -58,9 +93,7 @@
             font-size: 12px;
         }
 
-        a span {
-            text-decoration: underline;
-        }
+
 
         .container {
             padding-top: 2rem;
@@ -111,6 +144,7 @@
 </head>
 
 <body>
+    @Html.Partial("_Sidebar")
     <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
         <div class="row w-100">
             <div class="col">
