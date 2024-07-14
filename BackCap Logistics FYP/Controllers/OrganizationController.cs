@@ -68,6 +68,7 @@ namespace BackCap_Logistics_FYP.Controllers
                 {
                     return RedirectToAction("Login", "Authentication");
                 }
+                organization.OrganizationId = user.LocalId;
                 await AddOrganizationToFirebase(organization, user.LocalId);
 
                 ModelState.AddModelError(string.Empty, "Organization added successfully!");

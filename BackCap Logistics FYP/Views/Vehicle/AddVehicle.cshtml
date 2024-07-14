@@ -92,9 +92,6 @@
             text-decoration: none;
             font-size: 12px;
         }
-
-
-
         .container {
             padding-top: 2rem;
         }
@@ -142,9 +139,10 @@
         }
     </style>
 </head>
-
 <body>
-    @Html.Partial("_Sidebar")
+    @if (ViewBag.Requirement == "Done"){
+        @Html.Partial("_Sidebar")
+    }
     <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
         <div class="row w-100">
             <div class="col">

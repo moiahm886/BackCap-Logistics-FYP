@@ -45,11 +45,8 @@ namespace BackCap_Logistics_FYP.Controllers
                 {
                     return View();
                 }
-                else if((await GetCount(User.LocalId) == 2))
-                {
-                    return RedirectToAction("LoggingIn", "Authentication", new {tokens=check});
-                }
-                return View();
+                ViewBag.Requirement = "Done";
+                return View(); 
             }
             else
             {
@@ -107,29 +104,9 @@ namespace BackCap_Logistics_FYP.Controllers
         }
         public async Task<List<Vehicle>> GetVehicle(string localId)
         {
-            using (var client = new FireSharp.FirebaseClient(config))
-            {
-                FirebaseResponse vehicleresponse = await client.GetAsync($"{localId}/vehicles");
-                if (vehicleresponse.Body != "null")
-                {
-                    var vehicleList = new List<Vehicle>();
-                    var data = JsonConvert.DeserializeObject<dynamic>(vehicleresponse.Body);
-
-                    foreach (var vehicleData in data)
-                    {
-                        Vehicle vehicle = JsonConvert.DeserializeObject<Vehicle>(vehicleData.Value.ToString());
-                        if (!vehicle.Equals(null))
-                        {
-                            vehicleList.Add(vehicle);
-                        }
-                    }
-                    return vehicleList;
-                }
-                else
-                {
-                    return new List<Vehicle>();
-                }
-            }
+ 
+            List<Vehicle> vehicles =  await service.GetVehicle(localId);
+            return vehicles;
         }
 
         public async Task<int> GetVehicleCount(string localId)
@@ -160,7 +137,7 @@ namespace BackCap_Logistics_FYP.Controllers
         }
 
             public async Task<IActionResult> DisplayVehicles()
-        {
+            {
             var check = _httpContextAccessor.HttpContext.Session.GetString("_UserToken");
             var user = await auth.GetUserAsync(check);
             if (user == null)
@@ -170,7 +147,7 @@ namespace BackCap_Logistics_FYP.Controllers
 
             List<Vehicle> vehicles = await GetVehicle(user.LocalId);
             return View(vehicles);
-        }
+            }
         public async Task<IActionResult> UpdateVehicle(string vehicleId)
         {
             var check = _httpContextAccessor.HttpContext.Session.GetString("_UserToken");

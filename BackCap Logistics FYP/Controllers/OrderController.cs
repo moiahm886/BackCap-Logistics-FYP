@@ -5,12 +5,15 @@ using FireSharp.Response;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using BackCap_Logistics_FYP.Services;
+
 
 namespace BackCap_Logistics_FYP.Controllers
 {
     public class OrderController : Controller
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private FireStoreService<Order> service = new FireStoreService<Order>();
         IFirebaseConfig config = new FireSharp.Config.FirebaseConfig
         {
             AuthSecret = "AIzaSyBpWMFMzJrk-MYSTiFaR86L9O2C_-IhEic",
@@ -49,6 +52,33 @@ namespace BackCap_Logistics_FYP.Controllers
                 return RedirectToAction("AuthenticatingEmail", "Authentication");
             }
         }
+        public async Task<IActionResult> OrderScreen(string Id)
+        {
+            try
+            {
+                var check = _httpContextAccessor.HttpContext.Session.GetString("_UserToken");
+                if (check == null)
+                {
+                    return RedirectToAction("Login", "Authentication");
+                }
+                var user = await auth.GetUserAsync(check);
+                if (user == null)
+                {
+                    return RedirectToAction("Login", "Authentication");
+                }
+                if (Id != null)
+                {
+                    ViewBag.Id = Id;   
+                }
+                List<Order> order = await GetOrder();
+                return View(order);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+            return View();  
+        }
         public async Task<IActionResult> AddingOrder(Order order,string VehicleId)
         {
             try
@@ -65,7 +95,7 @@ namespace BackCap_Logistics_FYP.Controllers
                 }
                 VehicleController controller = new VehicleController(_httpContextAccessor);
                 Vehicle vehicle = await controller.GetVehicleById(VehicleId, user.LocalId);
-                order.VehicleDetail = vehicle;
+                //order.VehicleDetail = vehicle;
                 await AddOrderToFirebase(order, user.LocalId,DateTime.UtcNow);
                 ModelState.AddModelError(string.Empty, "Order added successfully!");
             }
@@ -81,8 +111,8 @@ namespace BackCap_Logistics_FYP.Controllers
         {
             using (var client = new FireSharp.FirebaseClient(config))
             {
-                order.Status = "Pending";
-                order.EstimatedTime=estimatedTime;
+                //order.Status = "Pending";
+                //order.EstimatedTime=estimatedTime;
 
                 var response = await client.PushAsync($"{userId}/orders", order);
                 string orderId = response.Result.name;
@@ -90,7 +120,7 @@ namespace BackCap_Logistics_FYP.Controllers
                 {
                     throw new Exception("Failed to allocate unique OrganizationId.");
                 }
-                order.OrderId = orderId;
+                //order.OrderId = orderId;
                 var updateResponse = await client.SetAsync($"{userId}/orders/{orderId}", order);
 
                 if (updateResponse.StatusCode != System.Net.HttpStatusCode.OK)
@@ -119,31 +149,10 @@ namespace BackCap_Logistics_FYP.Controllers
         }
 
 
-        private async Task<List<Order>> GetOrder(string localId)
+        public async Task<List<Order>> GetOrder()
         {
-            using (var client = new FireSharp.FirebaseClient(config))
-            {
-                FirebaseResponse orderresponse = await client.GetAsync($"{localId}/orders");
-                if (orderresponse.Body != "null")
-                {
-                    var orderList = new List<Order>();
-                    var data = JsonConvert.DeserializeObject<dynamic>(orderresponse.Body);
-
-                    foreach (var orderData in data)
-                    {
-                        Order order = JsonConvert.DeserializeObject<Order>(orderData.Value.ToString());
-                        if (!order.Equals(null))
-                        {
-                            orderList.Add(order);
-                        }
-                    }
-                    return orderList;
-                }
-                else
-                {
-                    return new List<Order>();
-                }
-            }
+            List<Order> order =  await service.GetAll("Orders");
+            return order;  
         }
         public async Task<IActionResult> DisplayOrders()
         {
@@ -154,7 +163,7 @@ namespace BackCap_Logistics_FYP.Controllers
                 return RedirectToAction("Login", "Authentication");
             }
 
-            List<Order> orders = await GetOrder(user.LocalId);
+            List<Order> orders = await GetOrder();
             return View(orders);
         }
 
@@ -169,7 +178,7 @@ namespace BackCap_Logistics_FYP.Controllers
             using (var client = new FireSharp.FirebaseClient(config))
             {
                 Order order = await GetOrderById(OrderId,user.LocalId);
-                order.Status = "Accepted";
+                //order.Status = "Accepted";
                 string path = $"{user.LocalId}/orders/{OrderId}";
                 var response = await client.SetAsync(path, order);
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)

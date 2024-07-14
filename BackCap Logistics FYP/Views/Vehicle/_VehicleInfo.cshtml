@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model List<Vehicle>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -227,7 +228,9 @@
                                         <th>Engine Capacity</th>
                                         <th>Model</th>
                                         <th>Max Speed</th>
-                                        <th>Container Dimensions</th>
+                                        <th>Height</th>
+                                        <th>Length</th>
+                                        <th>Width</th>
                                         <th>Max Weight</th>
                                         <th>Permit Number</th>
                                         <th>Number Plate</th>
@@ -235,7 +238,28 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                @foreach (var vehicle in Model)
+                                {
+                                    <tr>
+                                        <td>@vehicle.Category</td>
+                                        <td>@vehicle.Hp</td>
+                                        <td>@vehicle.EngineCapacity</td>
+                                        <td>@vehicle.Model</td>
+                                        <td>@vehicle.MaxSpeed</td>
+                                        <td>@vehicle.CaintainerCapacity.height</td>
+                                        <td>@vehicle.CaintainerCapacity.length</td>
+                                        <td>@vehicle.CaintainerCapacity.width</td>
+                                        <td>@vehicle.CaintainerCapacity.maxWeight</td>
+                                        <td>@vehicle.Permit.PermitNumber</td>
+                                        <td>@vehicle.Permit.NumberPlate</td>
+                                        <td class="button-column">
+                                            <form asp-controller="Vehicle" asp-action="UpdateVehicle">
+                                                <input type="hidden" name="@vehicle.Permit.PermitNumber" />
+                                                <button type="submit">Update</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
                                 </tbody>
                             </table>
                         </div>
@@ -250,12 +274,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
             crossorigin="anonymous"></script>
-    <script>
-        function updateVehicle(id) {
-            // Add your update logic here
-            console.log("Update vehicle with ID:", id);
-        }
-    </script>
 </body>
 
 </html>

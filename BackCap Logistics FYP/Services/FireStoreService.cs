@@ -12,9 +12,9 @@ namespace BackCap_Logistics_FYP.Services
 
         public FireStoreService()
         {
-            string filepath = "C:\\FireStoreApiKey\\swift-area-410014-firebase-adminsdk-dgcu0-3a793c1679.json";
+            string filepath = "D:\\Capital University of Science and Technology\\8th Semester\\FYP\\BackCap Logistics FYP\\backcaps-logistics-firebase-adminsdk-3s5ll-938599648b.json";
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", filepath);
-            projectid = "swift-area-410014";
+            projectid = "backcaps-logistics";
             firestoreDb = FirestoreDb.Create(projectid);
         }
         public async Task<List<T>> GetChat(string path,string id)
@@ -61,10 +61,11 @@ namespace BackCap_Logistics_FYP.Services
                 }
                 return result;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Console.WriteLine(ex.Message);
+                List<T> result = new List<T>();
+                return result;
             }
         }
         public async Task Add(T t,string address,string id)
@@ -189,6 +190,24 @@ namespace BackCap_Logistics_FYP.Services
                 Console.WriteLine($"An error occurred while retrieving the vehicle count: {ex.Message}");
             }
             return -1;
+        }
+        public async Task<List<Vehicle>>GetVehicle(string organizationId)
+        {
+            try
+            {
+                DocumentReference organizationDocRef = firestoreDb.Collection("Organizations").Document(organizationId);
+                DocumentSnapshot snapshot = await organizationDocRef.GetSnapshotAsync();
+                Organization organization = snapshot.ConvertTo<Organization>();
+                List<Vehicle> vehicles = organization.Vehicles?.ToList();
+                return vehicles;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while retrieving the vehicle count: {ex.Message}");
+            }
+            List<Vehicle> vehicles1 = new List<Vehicle>();
+            return vehicles1;
         }
         public async Task<T> Get(string Id,string path)
         {

@@ -6,12 +6,12 @@ namespace BackCap_Logistics_FYP.Models
     public class BoxContainer
     {
         [FirestoreProperty]
-        public double Height { get; set; }
+        public double height { get; set; }
         [FirestoreProperty]
-        public double Width { get; set; }
+        public double width { get; set; }
         [FirestoreProperty]
-        public double Length { get; set; }
+        public double length { get; set; }
         [FirestoreProperty]
-        public double MaxWeight { get; set; }
+        public double maxWeight { get; set; }
     }
 }

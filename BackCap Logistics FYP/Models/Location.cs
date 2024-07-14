@@ -6,11 +6,11 @@ namespace BackCap_Logistics_FYP.Models
     public class Location
     {
         [FirestoreProperty]
-        public double Longitude { get; set; }
+        public double longitude { get; set; }
         [FirestoreProperty]
-        public double Latitude { get; set; }
+        public double latitude { get; set; }
         [FirestoreProperty]
-        public string Address { get; set; }
+        public string address { get; set; }
 
     }
 }

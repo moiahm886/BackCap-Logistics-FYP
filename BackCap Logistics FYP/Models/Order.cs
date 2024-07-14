@@ -7,18 +7,20 @@ namespace BackCap_Logistics_FYP.Models
     public class Order
     {
         [FirestoreProperty]
-        public string OrderId { get; set; }
+        public Address address { get; set; }
         [FirestoreProperty]
-        public Location Source { get; set; }
+        public string customerId { get; set; }
         [FirestoreProperty]
-        public Location Destination { get; set; }
+        public string customerImage { get; set; }
         [FirestoreProperty]
-        public DateTime EstimatedTime { get; set; }
+        public string driverId { get; set; }
+
         [FirestoreProperty]
-        public DateTime OrderTime { get; set; }
+        public int numberOfPackage { get; set; }
+
         [FirestoreProperty]
-        public string Status { get; set; }
+        public Package package { get; set; }
         [FirestoreProperty]
-        public Vehicle VehicleDetail { get; set; }
+        public string customerName { get; set; }
     }
 }

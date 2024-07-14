@@ -50,8 +50,12 @@ namespace BackCap_Logistics_FYP.Controllers
             }
             return View();
         } 
-        public IActionResult Login()
+        public IActionResult Login(string success)
         {
+            if(success != null)
+            {
+                ViewBag.Done = success;
+            }
             return View();
         }
         public async Task<IActionResult> AuthenticatingEmail(string Token)
@@ -67,6 +71,22 @@ namespace BackCap_Logistics_FYP.Controllers
                 _httpContextAccessor.HttpContext.Session.SetString("_UserToken", Token);
                 return RedirectToAction("User", "AddUser");
             }
+            
+        }
+        public async Task<IActionResult> ForgetPassword(string email)
+        {
+            try
+            {
+                await auth.SendPasswordResetEmailAsync(email);
+                string success = "Successful";
+                return RedirectToAction("Login", "Authentication", new {success = success});
+            }
+            catch (Exception)
+            {
+                string success = "Failed";
+                throw;
+                return RedirectToAction("Login", "Authentication", new { success = success });
+            }   
         }
         public async Task<IActionResult> SendVerificationEmail(string Token)
         {
@@ -86,6 +106,8 @@ namespace BackCap_Logistics_FYP.Controllers
 
         public async Task<IActionResult> LoggingIn(Login login, string tokens)
         {
+
+            ViewBag.Token = tokens;
             UserController userController = new UserController(_httpContextAccessor);
             OrganizationController organizationController = new OrganizationController(_httpContextAccessor);
             VehicleController vehicleController = new VehicleController(_httpContextAccessor);
