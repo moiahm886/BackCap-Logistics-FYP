@@ -3,13 +3,12 @@
 namespace BackCap_Logistics_FYP.Models
 {
     [FirestoreData]
-    public class Package
+    public class OrderViewList
     {
         [FirestoreProperty]
-        public string loadingType { get; set; }
+        public List<Order> order { get; set; }
         [FirestoreProperty]
-        public BoxContainer properties { get; set; }
- 
-      
+        public Order SingleOrder { get; set; }
+
     }
 }

@@ -56,6 +56,10 @@ namespace BackCap_Logistics_FYP.Controllers
         {
             try
             {
+                List<Order> orders = new List<Order>();
+                orders = await GetOrder();
+                orders = orders.Where(o => o.status == "OrderStatus.Pending").ToList();
+                Order singleorder = new Order();
                 var check = _httpContextAccessor.HttpContext.Session.GetString("_UserToken");
                 if (check == null)
                 {
@@ -68,10 +72,16 @@ namespace BackCap_Logistics_FYP.Controllers
                 }
                 if (Id != null)
                 {
-                    ViewBag.Id = Id;   
+                    ViewBag.Id = Id;
+                    singleorder = orders.FirstOrDefault(o=>o.customerId == Id);
                 }
-                List<Order> order = await GetOrder();
-                return View(order);
+                var model = new OrderViewList
+                {
+                    order = orders,
+                    SingleOrder = singleorder
+
+                };
+                return View(model);
             }
             catch (Exception ex)
             {

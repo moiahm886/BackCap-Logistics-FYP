@@ -1,4 +1,7 @@
-﻿@model List<Order>
+﻿@model OrderViewList
+@{
+    string permitnumber = ViewBag.Id;
+}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -312,12 +315,33 @@
                     background-color: #28A745;
                     color: white;
                 }
+
+        .list-tile {
+            display: flex;
+            align-items: center;
+            background-color: #FFDAD6;
+            padding: 10px;
+            border-radius: 19px;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit; /* Inherit color from parent */
+        }
+
+            .list-tile img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                margin-right: 10px;
+            }
+
+            .list-tile span {
+                margin-left: 10px;
+            }
     </style>
 </head>
 
 <body>
     @Html.Partial("_Sidebar")
-
     <div class="top-nav">
         <div class="search-bar">
             <input type="text" placeholder="Search Fleet">
@@ -333,17 +357,15 @@
         <div class="left-content">
             <div class="d-flex flex-column jusitfy-content-center align-items-center" style="justify-content: center;">
                 <img src="/Assets/bidding.png" alt="Bidding Image" style="height: 255px; object-fit: contain;">
-                <div style="padding: 10px;">Total Bidding: 01</div>
+                <div style="padding: 10px;">Total Bidding: @Model.order.Count</div>
             </div>
-            @foreach (var name in Model)
+            @foreach (var name in Model.order)
             {
                 <div class="list-tile" onclick="openChat('John Doe')">
                     <img src="/Assets/profile.png" alt="John Doe">
                 <span>
                     <div class="heading">Requested By</div>
-                    <div>
-                        @name.customerName
-                    </div>
+                        <a asp-controller="Order" asp-action="OrderScreen" asp-route-Id="@name.customerId" class="list-tile">@name.customerName</a>
                 </span>
             </div>
             }
@@ -358,24 +380,59 @@
                     <img src="Assets/vehicle.png" style="width: 200px;" alt="">
                 </div>
                 <div class="row">
-                    <span><i class="bi bi-envelope"></i> Email: moizahmed@gmail.com</span>
-                    <span><i class="bi bi-check-circle-fill" style="color: green;"></i> Status: Verified</span>
+                    @if (permitnumber == null)
+                    {
+                        <span><i class="bi bi-envelope"></i> Name: -</span>
+                        <span><i class="bi bi-check-circle-fill" style="color: green;"></i> Status: -</span>
+                    }
+                    else
+                    {
+                        <span><i class="bi bi-envelope"></i> Name: @Model.SingleOrder.customerName </span>
+                        <span><i class="bi bi-check-circle-fill" style="color: green;"></i> Vehicle:@Model.SingleOrder.vehicleCategory </span>
+                    }
                 </div>
                 <div class="row">
-                    <span><i class="bi bi-box-seam"></i> Weight (KG): 500</span>
-                    <span><i class="bi bi-clock-fill" style="color: orange;"></i> Request: Pending</span>
+                    @if (permitnumber == null)
+                    {
+                        <span><i class="bi bi-box-seam"></i> Weight (KG): -</span>
+                        <span><i class="bi bi-clock-fill" style="color: orange;"></i> Request: -</span>
+                    }
+                    else
+                    {
+                        <span><i class="bi bi-box-seam"></i> Weight (KG): @Model.SingleOrder.package.properties.maxWeight</span>
+                        <span><i class="bi bi-clock-fill" style="color: orange;"></i> Request: @Model.SingleOrder.status</span>
+                    }
                 </div>
                 <div class="row">
-                    <span><i class="bi bi-geo-alt-fill" style="color: red;"></i> From: CUST, Islamabad</span>
-                    <span><i class="bi bi-geo-alt-fill" style="color: green;"></i> To: Bahria Town, Islamabad</span>
+                    @if(permitnumber == null){
+                        <span><i class="bi bi-geo-alt-fill" style="color: red;"></i> From: -</span>
+                        <span><i class="bi bi-geo-alt-fill" style="color: green;"></i> To: -</span>
+                    }
+                    else
+                    {
+                        <span><i class="bi bi-geo-alt-fill" style="color: red;"></i> From: @Model.SingleOrder.address.from.address</span>
+                        <span><i class="bi bi-geo-alt-fill" style="color: green;"></i> To: @Model.SingleOrder.address.to.address</span>
+                    }
                 </div>
                 <div class="price">
+                    
                     <span>Your Price:</span>
-                    <span>
-                        <button>-</button>
-                        <span>Rs 9010</span>
-                        <button>+</button>
-                    </span>
+                    @if (permitnumber == null)
+                    {
+                        <span>
+                            <button>-</button>
+                            <span>Rs -</span>
+                            <button>+</button>
+                        </span>
+                    }
+                    else
+                    {
+                        <span>
+                            <button>-</button>
+                            <span>@Model.SingleOrder.price</span>
+                            <button>+</button>
+                        </span>
+                    }
                 </div>
                 <div class="actions">
                     <button class="reject">Reject</button>
@@ -392,6 +449,32 @@
                 zoom: 14,
             };
             var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+            var directionsService = new google.maps.DirectionsService();
+            var directionsRenderer = new google.maps.DirectionsRenderer({
+                polylineOptions: {
+                    strokeColor: '#00008B',
+                    strokeWeight: 6
+                }
+            });
+            directionsRenderer.setMap(map);
+
+            var start = new google.maps.LatLng(, 73.06511715129574);
+            var end = new google.maps.LatLng(33.6844, 73.0479); // Example destination
+
+            var request = {
+                origin: start,
+                destination: end,
+                travelMode: 'DRIVING' // Can be 'DRIVING', 'BICYCLING', 'TRANSIT', or 'WALKING'
+            };
+
+            directionsService.route(request, function (result, status) {
+                if (status == 'OK') {
+                    directionsRenderer.setDirections(result);
+                } else {
+                    alert("Directions request failed due to " + status);
+                }
+            });
         }
     </script>
 
