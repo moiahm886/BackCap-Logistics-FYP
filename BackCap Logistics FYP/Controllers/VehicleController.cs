@@ -67,6 +67,7 @@ namespace BackCap_Logistics_FYP.Controllers
                 {
                     return RedirectToAction("Login", "Authentication");
                 }
+                
                 await AddVehicleToFirebase(vehicle, user.LocalId);
 
                 ModelState.AddModelError(string.Empty, "Vehicle added successfully!");

@@ -2,6 +2,7 @@
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections;
 using System.Reflection;
 namespace BackCap_Logistics_FYP.Services
 {
@@ -96,26 +97,18 @@ namespace BackCap_Logistics_FYP.Services
             }
         }
 
-        public async Task<T> Update(string id,string path)
+        public async Task Update(T t, string id,string path)
         {
             try
             {
-                DocumentReference documentReference = firestoreDb.Collection(path).Document(id);
-                DocumentSnapshot documentSnapshot = await documentReference.GetSnapshotAsync();
-                if (documentSnapshot != null)
-                {
-                    T t = documentSnapshot.ConvertTo<T>();
-                    return t;
-                }
-                else
-                {
-                    return default(T);
-                }
+                DocumentReference docRef = firestoreDb.Collection(path).Document(id);
+                await docRef.SetAsync(t);
+                Console.WriteLine($"Document {id} updated successfully.");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Console.WriteLine($"Error updating document {id}: {ex.Message}");
+                throw; 
             }
         }
         public async void Delete(string id,string path)
@@ -149,6 +142,29 @@ namespace BackCap_Logistics_FYP.Services
             {
                 Console.WriteLine($"An error occurred while checking if document exists in Firestore: {ex}");
                 throw;
+            }
+        }
+        public async Task<bool> CreateAsync(Chat chat)
+        {
+            try
+            {
+                CollectionReference collection = firestoreDb.Collection("Chats");
+
+                Dictionary<string, object> dummyMap = new Dictionary<string, object>();
+                await collection
+                    .Document(chat.chatId)
+                    .Collection("Messages")
+                    .Document(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString())
+                    .SetAsync(chat);
+                await collection.Document(chat.chatId).SetAsync(dummyMap);
+
+                Console.WriteLine("Document created successfully.");
+                return true;
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"Exception in adding order to database: {exception.Message}");
+                return false;
             }
         }
         public async Task AddVehicleToOrganization(string organizationId, Vehicle vehicle)

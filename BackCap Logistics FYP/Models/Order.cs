@@ -35,5 +35,7 @@ namespace BackCap_Logistics_FYP.Models
 
         [FirestoreProperty]
         public string vehicleId { get; set; }
+        [FirestoreProperty]
+        public string timestamp { get; set; }
     }
 }

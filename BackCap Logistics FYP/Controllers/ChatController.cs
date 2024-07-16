@@ -50,7 +50,7 @@ namespace BackCap_Logistics_FYP.Controllers
                 if (!string.IsNullOrEmpty(DriverId))
                 {
                     ViewBag.DriverId = DriverId;
-                    string Id = user.LocalId + "_" + DriverId;
+                    string Id = DriverId + "_" + user.LocalId;
                     Chat chat = new Chat();
                     chats = await Service.GetChat("Chats", Id);
                     if (chats.Count==0)
@@ -58,16 +58,16 @@ namespace BackCap_Logistics_FYP.Controllers
                         
                         long millisecondsSinceEpoch = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                         string TimeStamp = millisecondsSinceEpoch.ToString();
-                        chat.text = "Hello";
-                        chat.email = user.Email;
+                        chat.text = "NULL";
+                        chat.email = "NULL";
                         chat.timestamp = TimeStamp;
                         chat.chatId = Id;
+                        await Service.CreateAsync(chat);
                         await Service.AddChat(chat,"Chats",Id,TimeStamp);
-                        
                         chats = await Service.GetChat("Chats", Id);
                     }
                 }
-
+                chats.RemoveAll(c=>c.text=="NULL");
                 var model = new ChatViewModel
                 {
                     Drivers = drivers,
@@ -85,7 +85,7 @@ namespace BackCap_Logistics_FYP.Controllers
         }
         public async Task<IActionResult> Getchat(string AdminId,string DriverId)
         {
-            string Id = AdminId + "_" + DriverId;
+            string Id = DriverId + "_" + AdminId;
             List<Chat>chat = await Service.GetChat("Chats",Id);
             return Json(chat);
         }
@@ -101,7 +101,7 @@ namespace BackCap_Logistics_FYP.Controllers
             {
                 return RedirectToAction("Login", "Authentication");
             }
-            string Id = AdminId + "_" + DriverId;
+            string Id = DriverId + "_" + AdminId;
             chat.email = user.Email;
             long millisecondsSinceEpoch = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             string TimeStamp = millisecondsSinceEpoch.ToString();

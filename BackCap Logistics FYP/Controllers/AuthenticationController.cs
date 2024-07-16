@@ -69,7 +69,7 @@ namespace BackCap_Logistics_FYP.Controllers
             else
             {
                 _httpContextAccessor.HttpContext.Session.SetString("_UserToken", Token);
-                return RedirectToAction("User", "AddUser");
+                return RedirectToAction("AddUser", "User");
             }
             
         }

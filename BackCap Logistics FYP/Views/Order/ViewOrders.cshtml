@@ -1,7 +1,6 @@
-﻿@model List<Vehicle>
+﻿@model List<Order>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -171,19 +170,22 @@
             color: white;
         }
 
-        .btn-update:hover {
-            background-color: #A0000F;
-            color: white;
-        }
+            .btn-update:hover {
+                background-color: #A0000F;
+                color: white;
+            }
 
         media (max-width: 768px) {
-            .card {
-                padding: 1rem;
-            }
+            .card
 
-            .container {
-                padding: 1rem;
-            }
+        {
+            padding: 1rem;
+        }
+
+        .container {
+            padding: 1rem;
+        }
+
         }
 
         .table-header {
@@ -201,58 +203,51 @@
             border: none;
         }
 
-        .btn-add-vehicle:hover {
-            background-color: #A0000F;
-        }
+            .btn-add-vehicle:hover {
+                background-color: #A0000F;
+            }
     </style>
 </head>
 
 <body>
     @Html.Partial("_Sidebar")
 
-    <form>
-    <button asp-controller="Vehicle" asp-action="AddVehicle" class="btn-add-vehicle" style="float: right;">Add Vehicle</button>
-    </form>
     <div class="container d-flex justify-content-center align-items-center" style="min-height: 50vh;">
         <div class="row w-100">
             <div class="col">
                 <section class="position-relative px-2 py-4 py-xl-5">
                     <div class="card" style="border-radius: 44px;">
-                        <h1 style="text-align: center;">Display Vehicles</h1>
+                        <h1 style="text-align: center;">Display Orders</h1>
                         <div class="table-responsive m-3 px-3">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Category</th>
-                                        <th>Horsepower</th>
-                                        <th>Engine Capacity</th>
-                                        <th>Model</th>
-                                        <th>Max Speed</th>
-                                        <th>Height</th>
-                                        <th>Length</th>
-                                        <th>Width</th>
+                                        <th>Customer Name</th>
+                                        <th>Number of Package</th>
+                                        <th>Loading Type</th>
+                                        <th>Price</th>
                                         <th>Max Weight</th>
-                                        <th>Permit Number</th>
-                                        <th>Number Plate</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Shared Delivery</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach (var vehicle in Model)
-                                {
-                                    <tr>
-                                        <td>@vehicle.Category</td>
-                                        <td>@vehicle.Hp</td>
-                                        <td>@vehicle.EngineCapacity</td>
-                                        <td>@vehicle.Model</td>
-                                        <td>@vehicle.MaxSpeed</td>
-                                        <td>@vehicle.CaintainerCapacity.height</td>
-                                        <td>@vehicle.CaintainerCapacity.length</td>
-                                        <td>@vehicle.CaintainerCapacity.width</td>
-                                        <td>@vehicle.CaintainerCapacity.maxWeight</td>
-                                        <td>@vehicle.Permit.PermitNumber</td>
-                                        <td>@vehicle.Permit.NumberPlate</td>
-                                    </tr>
-                                }
+                                    @foreach (var order in Model)
+                                    {
+                                        <tr>
+                                            <td>@order.customerName</td>
+                                            <td>@order.numberOfPackage</td>
+                                            <td>@order.package.loadingType</td>
+                                            <td>@order.price</td>
+                                            <td>@order.package.properties.maxWeight</td>
+                                            <td>@order.address.from.address</td>
+                                            <td>@order.address.to.address</td>
+                                            <td>@order.sharedDelivery</td>
+                                            <td>@order.status</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>

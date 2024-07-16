@@ -358,7 +358,7 @@
                 <div class="stacked-indicators">
                     <div class="status-indicator">
                         <span class="material-symbols-outlined">local_shipping</span>
-                        <p>@Model.AvailableVehicle Available</p>
+                        <p>@Model.Vehicles.Count Available</p>
                     </div>
                     <div class="status-indicator">
                         <span class="material-symbols-outlined">map</span>
@@ -383,7 +383,7 @@
             </div>
 
             <div class="option-cards">
-                <a href="#">
+                <a asp-controller="Order" asp-action="ViewResource">
                     <div class="option-card">
                         <img src="/Assets/Login_background.png" class="m-2" style="width: 90px;" alt="Resource Hub">
                         <p>Resource Hub</p>

@@ -6,24 +6,33 @@ namespace BackCap_Logistics_FYP.Models
     public class Users
     {
         [FirestoreProperty]
-        public string UserName { get; set; }
+        public string cnic { get; set; }
         [FirestoreProperty]
-        public string Address { get; set; }
+        public string customerID { get; set; }
         [FirestoreProperty]
-        public string CNIC  { get; set; }
+        public string DriverID { get; set; }
         [FirestoreProperty]
-        public string Email { get; set; }
+        public string email { get; set; }
         [FirestoreProperty]
-        public string FullName { get; set; }
+        public string license { get; set; }
         [FirestoreProperty]
-        public string Password { get; set; }
+        public Location location { get; set; }
         [FirestoreProperty]
-        public string Phone { get; set; }
+        public string name { get; set; }
         [FirestoreProperty]
-        public string UserId { get; set; }
+        public string phoneNumber { get; set; }
         [FirestoreProperty]
-        public bool EmailVerified { get; set; }
+        public double rating { get; set; }
+
         [FirestoreProperty]
-        public DateTime Registration { get; set; }
+        public string role { get; set; }
+        [FirestoreProperty]
+        public string username { get; set; }
+        [FirestoreProperty]
+        public bool verified { get; set; }
+        [FirestoreProperty]
+        public string adminID { get; set; }
+
+
     }
 }

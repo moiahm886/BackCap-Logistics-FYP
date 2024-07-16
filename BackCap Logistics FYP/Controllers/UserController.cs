@@ -52,7 +52,7 @@ namespace BackCap_Logistics_FYP.Controllers
                 return RedirectToAction("AuthenticatingEmail", "Authentication");
             }
         }
-        public async Task<IActionResult> AddingUser(Users users)
+        public async Task<IActionResult> AddingUser(Users users,string address)
         {
             try
             {
@@ -66,10 +66,15 @@ namespace BackCap_Logistics_FYP.Controllers
                 {
                     return RedirectToAction("Login", "Authentication");
                 }
-                users.EmailVerified = User.IsEmailVerified;
-                users.Email = User.Email;
-                users.Registration = DateTime.UtcNow;
-                users.UserId = User.LocalId;
+                if (users.location == null)
+                {
+                    users.location = new Location();
+                }
+                users.location.address = address;
+                users.verified = User.IsEmailVerified;
+                users.email = User.Email;
+                users.adminID = User.LocalId;
+                users.role = "Role.Admin";
                 await AddUserToFirebase(users, User.LocalId);
                 ModelState.AddModelError(string.Empty, "User added successfully!");
             }
