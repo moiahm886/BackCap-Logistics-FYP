@@ -151,16 +151,14 @@
                         <span class="d-flex justify-content-center mt-4">
                             <h1>Add Vehicle</h1>
                         </span>
-                        <form asp-controller="Vehicle" asp-action="AddingVehicle" method="post" class="m-3 px-3 vehicle-form">
+                        <form asp-controller="Vehicle" asp-action="AddingVehicle" method="post" onsubmit="return validateForm()" class="m-3 px-3 vehicle-form">
                             <div class="form-floating mb-3 form-group">
                                 <i class="icon bi bi-gear-fill" style="font-size: 24px;"></i>
                                 <select class="form-control" id="category" name="Category" required style="border-radius: 15px;">
                                     <option value="">Select Category</option>
-                                    <option value="Pickup Truck">Pickup Truck</option>
-                                    <option value="Delivery Van">Delivery Van</option>
-                                    <option value="Cargo Truck">Cargo Truck</option>
-                                    <option value="Refrigerated Truck">Refrigerated Truck</option>
-                                    <option value="Box Truck">Box Truck</option>
+                                    <option value="Small Pickup">Small Pickup</option>
+                                    <option value="Mini Truck">Mini Truck</option>
+                                    <option value="Mini Truck (4x4)">Mini Truck (4x4)</option>
                                 </select>
                                 <label for="category">Category</label>
                             </div>
@@ -229,6 +227,26 @@
             </div>
         </div>
     </div>
+    <script>
+        function validateForm() {
+            var permitNumber = document.getElementById('PermitNumber').value;
+            var numberPlate = document.getElementById('NumberPlate').value;
+
+
+            if (permitNumber.length < 5 || permitNumber.length > 15) {
+                alert("Permit Number must be between 5 and 15 characters long.");
+                return false;
+            }
+
+            var numberPlatePattern = /^[A-Z0-9-]+$/;
+            if (!numberPlatePattern.test(numberPlate)) {
+                alert("Number Plate must contain only uppercase letters, numbers, and dashes.");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
     <script src="/Assets/scripts/Popper.js"
             integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
             crossorigin="anonymous"></script>

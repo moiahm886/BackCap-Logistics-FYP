@@ -167,7 +167,28 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+            height: calc(100vh - 90px); /* Adjust this value as needed */
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 10px;
         }
+
+            .left-content::-webkit-scrollbar {
+                width: 10px;
+            }
+
+            .left-content::-webkit-scrollbar-track {
+                background: #f1f1f1;
+            }
+
+            .left-content::-webkit-scrollbar-thumb {
+                background: #888;
+                border-radius: 4px;
+            }
+
+                .left-content::-webkit-scrollbar-thumb:hover {
+                    background: #555;
+                }
 
             .left-content .list-tile {
                 display: flex;
@@ -307,6 +328,19 @@
                     cursor: pointer;
                     display: flex; 
                     align-items: center; 
+                    justify-content: center;
+                }
+
+                .order-details .actions button {
+                    flex: 1;
+                    text-decoration: none;
+                    padding: 10px;
+                    border: none;
+                    border-radius: 20px;
+                    font-size: 16px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
                     justify-content: center;
                 }
 
@@ -485,22 +519,48 @@ select option {
                         </span>
                     }
                 </div>
+                <form method="post" asp-controller="Order" asp-action="AcceptOrder">
                 <div class="row">
-                    <span>
-                        <i class="bi bi-person" style="color:blueviolet"></i>
+                        <span>
+                            <i class="bi bi-person" style="color: blueviolet;"></i>
                             <span>Select Driver</span>
-                        <select class="select-container" style="color:ghostwhite">
-                            <option value="driver1">Driver 1</option>
-                            <option value="driver2">Driver 2</option>
-                            <option value="driver3">Driver 3</option>
-                            <option value="driver4">Driver 4</option>
-                        </select>
-                    </span>
+                            @if (Model.drivers != null && Model.drivers.Any())
+                            {
+                                <select class="select-container" name="driverId" style="color: ghostwhite;">
+                                    @foreach (var driver in Model.drivers)
+                                    {
+                                        <option value="@driver.DriverID">@driver.Name</option>
+                                    }
+                                </select>
+                            }
+                            else
+                            {
+                                <option value="" disabled selected>No drivers available</option>
+                            }
+                        </span>
+
                 </div>
                 <div class="actions">
-                    <a asp-action="Rejection" asp-controller="Order" class="reject">Reject</a>
-                    <a asp-action="Acceptance" asp-controller="Order" class="confirm">Confirm</a>
-                </div>
+                        @if (permitnumber != "null")
+                        {
+                            <a asp-action="RejectOrder" asp-controller="Order" asp-route-Id="@permitnumber" class="reject">Reject</a>
+                        }
+                        else
+                        {
+                            <a href="#" class="reject">Reject</a>
+                            
+                        }
+                            <input type="hidden" name="orderId" value="@permitnumber"/>
+                        @if (permitnumber != "null")
+                        {
+                            <button type="submit" class="confirm">Confirm</button>
+                        }
+                        else{
+
+                            <button type= "button" class="confirm" disabled>Confirm</button>
+                        }
+                        </div>
+                </form>
             </div>
         </div>
     </div>

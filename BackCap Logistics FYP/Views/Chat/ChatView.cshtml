@@ -247,6 +247,30 @@
                 margin-left: 10px;
             }
 
+        #chat-container {
+            height: calc(85vh - 80px); /* Adjust this value as needed */
+            overflow-y: auto;
+            padding-right: 10px; /* Add some padding for the scrollbar */
+        }
+
+            /* Optional: Customize the scrollbar appearance */
+            #chat-container::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            #chat-container::-webkit-scrollbar-track {
+                background: #f1f1f1;
+            }
+
+            #chat-container::-webkit-scrollbar-thumb {
+                background: #888;
+                border-radius: 4px;
+            }
+
+                #chat-container::-webkit-scrollbar-thumb:hover {
+                    background: #555;
+                }
+
     </style>
 </head>
 <body>
@@ -264,14 +288,24 @@
 
     <div class="main-content">
         <div class="left-content">
-            @foreach (var driver in Model.Drivers)
+            @if (Model.Drivers != null && Model.Drivers.Any())
             {
-                <a asp-controller="Chat" asp-action="ChatView" asp-route-driverId="@driver.DriverID" asp-route-AdminId="@Model.localId" class="list-tile">
-                    <img src="/Assets/profile.png" alt="Driver Profile Picture">
-                    <span>@driver.Name</span>
-                </a>
+                @foreach (var driver in Model.Drivers)
+                {
+                    <a asp-controller="Chat" asp-action="ChatView" asp-route-driverId="@driver.DriverID" asp-route-AdminId="@Model.localId" class="list-tile">
+                        <img src="/Assets/profile.png" alt="Driver Profile Picture">
+                        <span>@driver.Name</span>
+                    </a>
+                }
+            }
+            else
+            {
+                <div class="no-drivers-message">
+                    <p>No drivers available.</p>
+                </div>
             }
         </div>
+
                         
         <div class="right-content">
             <div id="chat-container">

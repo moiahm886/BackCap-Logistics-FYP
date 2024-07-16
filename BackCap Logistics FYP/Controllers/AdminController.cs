@@ -10,6 +10,7 @@ namespace BackCap_Logistics_FYP.Controllers
         FirebaseAuthProvider auth;
         private readonly IHttpContextAccessor _httpContextAccessor;
         FireStoreService<Organization> service = new FireStoreService<Organization>();
+        FireStoreService<Driver> Service = new FireStoreService<Driver>();
         public AdminController(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -20,6 +21,7 @@ namespace BackCap_Logistics_FYP.Controllers
         {
             try
             {
+                OrganizationViewModel model = new OrganizationViewModel();
                 var check = _httpContextAccessor.HttpContext.Session.GetString("_UserToken");
                 if (check == null)
                 {
@@ -31,7 +33,11 @@ namespace BackCap_Logistics_FYP.Controllers
                     return RedirectToAction("Login", "Authentication");
                 }
                 Organization organization = await GetOrganization(user.LocalId);
-                return View(organization);
+                List<Driver> driver = await Service.GetAll("Drivers");
+                driver = driver.Where(d=>d.organizationId==user.LocalId).ToList();
+                model.organization = organization;
+                model.DriverCount = driver.Count();
+                return View(model);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,4 @@
-﻿@model Organization
+﻿@model OrganizationViewModel
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -358,11 +358,11 @@
                 <div class="stacked-indicators">
                     <div class="status-indicator">
                         <span class="material-symbols-outlined">local_shipping</span>
-                        <p>@Model.Vehicles.Count Available</p>
+                        <p>@Model.organization.Vehicles.Count Available</p>
                     </div>
                     <div class="status-indicator">
                         <span class="material-symbols-outlined">map</span>
-                        <p>@Model.VehicleOnRoute On Route</p>
+                        <p>@Model.organization.VehicleOnRoute On Route</p>
                     </div>
                 </div>
             </div>
@@ -370,15 +370,15 @@
             <div class="status-indicators">
                 <div class="status-indicator">
                     <span class="material-symbols-outlined p-2" style="color: green;">schedule</span>
-                    <p>@Model.VehicleOnRoute On Time</p>
+                    <p>@Model.organization.VehicleOnRoute On Time</p>
                 </div>
                 <div class="status-indicator">
                     <span class="material-symbols-outlined p-2" style="color: red;">schedule</span>
-                    <p>@Model.DelayedDeliveries Delayed</p>
+                    <p>@Model.organization.DelayedDeliveries Delayed</p>
                 </div>
                 <div class="status-indicator">
                     <span class="material-symbols-outlined p-2" style="color: green;">groups</span>
-                    <p>@Model.NumberofDrivers Drivers</p>
+                    <p>@Model.DriverCount Drivers</p>
                 </div>
             </div>
 
@@ -386,19 +386,31 @@
                 <a asp-controller="Order" asp-action="ViewResource">
                     <div class="option-card">
                         <img src="/Assets/Login_background.png" class="m-2" style="width: 90px;" alt="Resource Hub">
-                        <p>Resource Hub</p>
+                        <p>Resources</p>
                     </div>
                 </a>
                 <a asp-controller="Order" asp-action="OrderScreen">
                     <div class="option-card">
-                        <img src="/Assets/orders.png" class="m-2" style="width: 60px;" alt="Orders">
+                        <img src="/Assets/orders.png" class="m-2" style="width: 67px;" alt="Orders">
                         <p>Orders</p>
                     </div>
                 </a>
-                <a asp-controller="Driver" asp-action="AddDriver">
+                <a asp-controller="Driver" asp-action="DisplayDrivers">
                     <div class="option-card">
-                        <img src="/Assets/driver.png" class="m-2" style="width: 50px;" alt="Drivers">
+                        <img src="/Assets/driver.png" class="m-2" style="width: 54px;" alt="Drivers">
                         <p>Drivers</p>
+                    </div>
+                </a>
+                <a asp-controller="User" asp-action="ViewUser">
+                    <div class="option-card">
+                        <img src="/Assets/profile.png" class="m-2" style="width: 70px;" alt="Drivers">
+                        <p>User</p>
+                    </div>
+                </a>
+                <a asp-controller="Organization" asp-action="DisplayOrganizations">
+                    <div class="option-card">
+                        <img src="/Assets/signup_background.png" class="m-2" style="width: 120px;" alt="Drivers">
+                        <p>Organization</p>
                     </div>
                 </a>
             </div>

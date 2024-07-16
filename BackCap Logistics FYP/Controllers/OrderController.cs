@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 using BackCap_Logistics_FYP.Services;
 
 
+
+
 namespace BackCap_Logistics_FYP.Controllers
 {
     public class OrderController : Controller
@@ -61,8 +63,9 @@ namespace BackCap_Logistics_FYP.Controllers
             try
             {
                 List<Order> orders = new List<Order>();
+                List<Driver> drivers = new List<Driver>();
                 orders = await GetOrder();
-                orders = orders.Where(o => o.status == "OrderStatus.Pending").ToList();
+               
                 Order singleorder = new Order();
                 var check = _httpContextAccessor.HttpContext.Session.GetString("_UserToken");
                 if (check == null)
@@ -83,8 +86,12 @@ namespace BackCap_Logistics_FYP.Controllers
                 {
                     ViewBag.Id = "null";
                 }
+                orders = orders.Where(o => o.status == "OrderStatus.Pending" && o.organizationId == user.LocalId).ToList();
+                drivers = await Driverservice.GetAll("Drivers");
+                drivers =  drivers.Where(d=>d.organizationId == user.LocalId && !d.Occupied).ToList();
                 model.order = orders;
                 model.SingleOrder = singleorder;
+                model.drivers = drivers;
                 return View(model);
             }
             catch (Exception ex)
@@ -202,7 +209,7 @@ namespace BackCap_Logistics_FYP.Controllers
                 return RedirectToAction("Login", "Authentication");
             }
             List<Order> orders = await GetOrder();
-            orders = orders.Where(o => o.status != "OrderStatus.Pending").ToList();
+            orders = orders.Where(o => o.status != "OrderStatus.Pending"&&o.organizationId==user.LocalId).ToList();
             return View(orders);
         }
         private async Task<Order> GetOrderById(string orderId, string localid)
@@ -270,15 +277,52 @@ namespace BackCap_Logistics_FYP.Controllers
             driver.DriverID = Id;
             driver.Name = users.name;
             driver.Verified = true;
-            await Driverservice.Add(driver, "Drivers", user.LocalId);
+            driver.organizationId = user.LocalId;
+            await Driverservice.Add(driver, "Drivers", driver.DriverID);
             await Service.Update(singlejob,singlejob.jobId,"Jobs");
             return RedirectToAction("ViewResource", "Order");
         }
         public async Task<IActionResult> RejectJob(string Id)
         {
-            Job singlejob = await Service.Get(Id, "Jobs");
-            singlejob.status = "Rejected";
+            List<Job> job = await Service.GetAll("Jobs");
+            Job singlejob = job.FirstOrDefault(j => j.jobRequest == Id);
+            if (singlejob != null)
+            {
+                singlejob.status = "Rejected";
+            }
+            await Service.Update(singlejob, singlejob.jobId, "Jobs");
             return RedirectToAction("ViewResource", "Order");
+        }
+        public async Task<IActionResult> RejectOrder(string Id)
+        {
+            var check = _httpContextAccessor.HttpContext.Session.GetString("_UserToken");
+            var user = await auth.GetUserAsync(check);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Authentication");
+            }
+            Order order = await service.Get(Id, "Orders");
+            order.status = "OrderStatus.Rejected";
+            await service.Update(order, Id, "Orders");
+            return RedirectToAction("OrderScreen", "Order");
+        }
+        public async Task<IActionResult> AcceptOrder(string orderId,string driverId)
+        {
+            var check = _httpContextAccessor.HttpContext.Session.GetString("_UserToken");
+            var user = await auth.GetUserAsync(check);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Authentication");
+            }
+            Order order = await service.Get(orderId, "Orders");
+            order.status = "OrderStatus.Accepted";
+            order.driverId = driverId;
+            order.organizationId = user.LocalId;
+            Driver driver = await Driverservice.Get(driverId, "Drivers");
+            driver.Occupied =  true;
+            await Driverservice.Update(driver, driverId, "Drivers");
+            await service.Update(order, orderId, "Orders");
+            return RedirectToAction("OrderScreen", "Order");
         }
     }
 

@@ -163,7 +163,24 @@
 
         .table {
             background-color: #F2E5E3;
+            border-radius: 20px;
         }
+
+        .card-heading {
+            text-align: center;
+            margin-top: 20px; /* Add margin-top for spacing */
+        }
+
+            .table th,
+            .table td {
+                border: none; /* Remove default table borders */
+                text-align: center; /* Center-align text */
+                vertical-align: middle; /* Align vertically center */
+            }
+
+            .table th {
+                font-weight: bold;
+            }
 
         .btn-update {
             background-color: #C00012;
@@ -217,7 +234,7 @@
             <div class="col">
                 <section class="position-relative px-2 py-4 py-xl-5">
                     <div class="card" style="border-radius: 44px;">
-                        <h1 style="text-align: center;">Display Orders</h1>
+                        <h1 class="card-heading" style="text-align: center;">Display Orders</h1>
                         <div class="table-responsive m-3 px-3">
                             <table class="table table-striped">
                                 <thead>
@@ -234,18 +251,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var order in Model)
+                                    @if (Model != null && Model.Any())
+                                    {
+                                        @foreach (var order in Model)
+                                        {
+                                            <tr>
+                                                <td>@order.customerName</td>
+                                                <td>@order.numberOfPackage</td>
+                                                <td>@order.package.loadingType</td>
+                                                <td>@order.price</td>
+                                                <td>@order.package.properties.maxWeight</td>
+                                                <td>@order.address.from.address</td>
+                                                <td>@order.address.to.address</td>
+                                                <td>@order.sharedDelivery</td>
+                                                <td>@order.status</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
                                     {
                                         <tr>
-                                            <td>@order.customerName</td>
-                                            <td>@order.numberOfPackage</td>
-                                            <td>@order.package.loadingType</td>
-                                            <td>@order.price</td>
-                                            <td>@order.package.properties.maxWeight</td>
-                                            <td>@order.address.from.address</td>
-                                            <td>@order.address.to.address</td>
-                                            <td>@order.sharedDelivery</td>
-                                            <td>@order.status</td>
+                                            <td colspan="9" class="text-center">No orders available.</td>
                                         </tr>
                                     }
                                 </tbody>

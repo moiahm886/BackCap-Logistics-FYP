@@ -162,7 +162,7 @@ namespace BackCap_Logistics_FYP.Controllers
                 return RedirectToAction("Login", "Authentication");
             }
 
-            List<Organization> organization = await GetOrganization(user.LocalId);
+            Organization organization = await service.Get(user.LocalId, "Organizations");
             return View(organization);
         }
         public async Task<IActionResult> UpdateOrganization(string organizationId)

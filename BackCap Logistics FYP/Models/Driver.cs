@@ -17,5 +17,9 @@ namespace BackCap_Logistics_FYP.Models
         [FirestoreProperty]
 
         public bool Verified { get; set; }
+        [FirestoreProperty]
+        public string organizationId { get; set; }
+        [FirestoreProperty]
+        public bool Occupied { get; set; }
     }
 }

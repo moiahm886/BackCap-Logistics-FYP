@@ -10,6 +10,7 @@ namespace BackCap_Logistics_FYP.Controllers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         FireStoreService<Users> service = new FireStoreService<Users>();
+        FireStoreService<Organization> Service = new FireStoreService<Organization>();
         IFirebaseConfig config = new FireSharp.Config.FirebaseConfig
         {
             AuthSecret = "AIzaSyBpWMFMzJrk-MYSTiFaR86L9O2C_-IhEic",
@@ -109,6 +110,17 @@ namespace BackCap_Logistics_FYP.Controllers
             }
             var User = await auth.GetUserAsync(check);
             return await service.DocumentExists(User.LocalId, "Users");
+        }
+        public async Task<IActionResult> ViewUser()
+        {
+            var check = _httpContextAccessor.HttpContext.Session.GetString("_UserToken");
+            if (check == null)
+            {
+                RedirectToAction("Login", "Authentication");
+            }
+            var User = await auth.GetUserAsync(check);
+            Users user = await service.Get(User.LocalId, "Users");
+            return View(user);
         }
     }
 }

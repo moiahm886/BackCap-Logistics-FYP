@@ -9,6 +9,7 @@ namespace BackCap_Logistics_FYP.Models
         public List<Order> order { get; set; }
         [FirestoreProperty]
         public Order SingleOrder { get; set; }
+        public List<Driver> drivers { get; set; }
 
     }
 }

@@ -116,6 +116,7 @@ namespace BackCap_Logistics_FYP.Controllers
             }
 
             List<Driver> drivers = await GetDriver();
+            drivers = drivers.Where(d=>d.organizationId==user.LocalId).ToList();
             return View(drivers);
         }
         public async Task<IActionResult> UpdateDriver(string driverId)

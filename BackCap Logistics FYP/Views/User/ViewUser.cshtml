@@ -1,4 +1,4 @@
-﻿@model Organization
+﻿@model Users
 <!DOCTYPE html>
 <html lang="en">
 
@@ -148,12 +148,12 @@
 
 <body>
     @Html.Partial("_Sidebar")
-    <div class="container d-flex justify-content-center align-items-center" style="height: 10vh;">
+    <div class="container d-flex justify-content-center align-items-center" style="height: 20vh;">
         <div class="row flex-row-reverse">
             <div class="col">
                 <div>
                     <div class="col d-flex justify-content-center align-items-center flex-column">
-                        <script src="/Assets/third.mjs" type="module"></script>
+                        <script src="/Assets/scripts/third.mjs" type="module"></script>
 
                         <dotlottie-player src="https://lottie.host/d8ade14a-24b3-47a9-930a-13c6bb63ffe3/AmTsk0I3Zd.json" background="transparent" speed="1" style="width: 710px; height:710px;" loop autoplay></dotlottie-player>
                         <!-- <img src="assets/signup_background.png" class="my-5" alt="login_background" style="width: 712px;">
@@ -162,33 +162,47 @@
                 </div>
             </div>
             <div class="col">
-                <section class="position-relative px-5 py-4 py-xl-5">
+                <section class="position-relative px-5 py-1 py-xl-5">
                     <div class="card" style="border-radius: 44px;">
                         <span class="d-flex justify-content-center mt-5">
-                            <h1>View Organization</h1>
+                            <h1>View User</h1>
                         </span>
 
-                        <form asp-controller="Organization" asp-action="AddingOrganization" method="post" class="m-5 px-5">
+                        <form asp-controller="User" asp-action="AddingUser" method="post" class="m-5 px-5 text-start">
                             <div class="form-floating mb-3">
-                                <i class="icon bi bi-building" style="font-size: 24px;"></i>
-                                <input class="form-control" style="border-radius: 15px;" type="text" id="name" name="Name" value="@Model.Name" readonly>
-                                <label for="name">Name</label>
+                                <i class="icon bi bi-person-fill" style="font-size: 24px;"></i>
+                                <input class="form-control" style="border-radius: 15px;" type="text" name="name" id="FullName" value="@Model.name" readonly>
+                                <label for="FullName">Full Name</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <i class="icon bi bi-person-fill" style="font-size: 24px;"></i>
+                                <input class="form-control" style="border-radius: 15px;" type="text" name="username" id="UserName" value="@Model.username" readonly>
+                                <label for="UserName">User Name</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <i class="icon bi bi-house-fill" style="font-size: 24px;"></i>
+                                <input class="form-control" style="border-radius: 15px;" type="text" name="address" id="Address" value="@Model.location.address" readonly>
+                                <label for="Address">Address</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <i class="icon bi bi-person-badge-fill" style="font-size: 24px;"></i>
+                                <input class="form-control" style="border-radius: 15px;" type="number" name="cnic" value="@Model.cnic"id="CnicImage"  readonly>
+                                <label for="CNIC">CNIC</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <i class="icon bi bi-telephone-fill" style="font-size: 24px;"></i>
+                                <input class="form-control" style="border-radius: 15px;" type="number" name="phoneNumber" value="@Model.phoneNumber" id="Phone"  readonly>
+                                <label for="Phone">Phone</label>
                             </div>
                             <div class="form-floating mb-3">
                                 <i class="icon bi bi-envelope-fill" style="font-size: 24px;"></i>
-                                <input class="form-control" style="border-radius: 15px;" type="email" id="email" name="Email" value="@Model.Email" readonly>
-                                <label for="email">Email</label>
+                                <input class="form-control" style="border-radius: 15px;" type="email" name="email" value="@Model.email" readonly>
+                                <label for="Phone">Email</label>
                             </div>
                             <div class="form-floating mb-3">
-                                <i class="icon bi bi-info-circle-fill" style="font-size: 24px;"></i>
-                                <textarea class="form-control" style="border-radius: 15px;" id="description" name="Description" rows="5" cols="80" readonly>@Model.Description</textarea>
-                                <label for="description">Description</label>
-                            </div>
-
-                            <div class="form-floating mb-3">
-                                <i class="icon bi bi-truck-front-fill" style="font-size: 24px;"></i>
-                                <input class="form-control" style="border-radius: 15px;" type="number" id="numberofVehicle" name="NumberofVehicle" value="@Model.Vehicles.Count" readonly>
-                                <label for="numberofVehicle">Number of Vehicles</label>
+                                <i class="icon bi bi-shield-fill" style="font-size: 24px;"></i>
+                                <input class="form-control" style="border-radius: 15px;" type="text" name="role" value="@Model.role" readonly>
+                                <label for="Phone">Role</label>
                             </div>
                         </form>
                     </div>
@@ -196,7 +210,15 @@
             </div>
         </div>
     </div>
-
+    <script>
+        function validateCnicLength() {
+            var cnicInput = document.getElementById('CnicImage');
+            var cnicValue = cnicInput.value;
+            if (cnicValue.length !== 13 && cnicValue.length !== 0) {
+                alert("CNIC must be 13 characters long.");
+            }
+        }
+    </script>
     <script src="/Assets/scripts/Popper.js"
             integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
             crossorigin="anonymous"></script>

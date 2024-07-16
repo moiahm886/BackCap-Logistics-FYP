@@ -106,7 +106,6 @@ namespace BackCap_Logistics_FYP.Controllers
 
         public async Task<IActionResult> LoggingIn(Login login, string tokens)
         {
-
             ViewBag.Token = tokens;
             UserController userController = new UserController(_httpContextAccessor);
             OrganizationController organizationController = new OrganizationController(_httpContextAccessor);
@@ -137,14 +136,17 @@ namespace BackCap_Logistics_FYP.Controllers
 
                 if (!(await userController.DocumentExists()))
                 {
+                    ViewBag.AlertMessage = "User does not exist. Please add user.";
                     return RedirectToAction("AddUser", "User");
                 }
                 else if (!(await organizationController.DocumentExists()))
                 {
+                    ViewBag.AlertMessage = "Organization does not exist. Please add organization.";
                     return RedirectToAction("AddOrganization", "Organization");
                 }
-                else if((await vehicleController.GetCount(user.LocalId)<2))
+                else if ((await vehicleController.GetCount(user.LocalId) < 2))
                 {
+                    ViewBag.AlertMessage = "Please add at least 2 vehicles.";
                     return RedirectToAction("AddVehicle", "Vehicle");
                 }
                 else
@@ -156,11 +158,10 @@ namespace BackCap_Logistics_FYP.Controllers
             {
                 var firebaseEx = JsonConvert.DeserializeObject<FirebaseError>(ex.ResponseData);
                 ModelState.AddModelError(string.Empty, firebaseEx.error.message);
-                return RedirectToAction("Login");
+                string message = "Incorrect Password or email";
+                return RedirectToAction("Login", "Authentication", new { success = message });
             }
-            return View();
         }
-
         private string HashEmail(string email)
         {
             using (SHA256 sha256Hash = SHA256.Create())

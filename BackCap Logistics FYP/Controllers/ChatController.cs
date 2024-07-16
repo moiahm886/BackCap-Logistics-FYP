@@ -45,6 +45,7 @@ namespace BackCap_Logistics_FYP.Controllers
                     return RedirectToAction("Login", "Authentication");
                 }
                 List<Driver> drivers = await service.GetAll("Drivers");
+                drivers =  drivers.Where(d=> d.organizationId == user.LocalId).ToList();
                 List<Chat> chats = new List<Chat>();
 
                 if (!string.IsNullOrEmpty(DriverId))

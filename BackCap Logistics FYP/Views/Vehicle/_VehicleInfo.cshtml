@@ -164,7 +164,19 @@
 
         .table {
             background-color: #F2E5E3;
+            border-radius: 20px;
         }
+
+            .table th,
+            .table td {
+                border: none; /* Remove default table borders */
+                text-align: center; /* Center-align text */
+                vertical-align: middle; /* Align vertically center */
+            }
+
+            .table th {
+                font-weight: bold;
+            }
 
         .btn-update {
             background-color: #C00012;
@@ -204,6 +216,11 @@
         .btn-add-vehicle:hover {
             background-color: #A0000F;
         }
+
+        .card-heading {
+            text-align: center;
+            margin-top: 20px; /* Add margin-top for spacing */
+        }
     </style>
 </head>
 
@@ -218,7 +235,7 @@
             <div class="col">
                 <section class="position-relative px-2 py-4 py-xl-5">
                     <div class="card" style="border-radius: 44px;">
-                        <h1 style="text-align: center;">Display Vehicles</h1>
+                        <h1 class ="card-heading" style="text-align: center;">Display Vehicles</h1>
                         <div class="table-responsive m-3 px-3">
                             <table class="table table-striped">
                                 <thead>
