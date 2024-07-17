@@ -13,8 +13,10 @@ namespace BackCap_Logistics_FYP.Services
 
         public FireStoreService()
         {
-            string filepath = "D:\\Capital University of Science and Technology\\8th Semester\\FYP\\BackCap Logistics FYP\\backcaps-logistics-firebase-adminsdk-3s5ll-938599648b.json";
-            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", filepath);
+            string appDirectory = Directory.GetCurrentDirectory();
+            string webRootPath = Path.Combine(appDirectory, "wwwroot");
+            string scriptPath = Path.Combine(webRootPath, "Script", "backcaps-logistics-firebase-adminsdk-3s5ll-938599648b.json");
+            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", scriptPath);
             projectid = "backcaps-logistics";
             firestoreDb = FirestoreDb.Create(projectid);
         }
