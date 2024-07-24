@@ -15,7 +15,7 @@ namespace BackCap_Logistics_FYP.Services
         {
             string appDirectory = Directory.GetCurrentDirectory();
             string webRootPath = Path.Combine(appDirectory, "wwwroot");
-            string scriptPath = Path.Combine(webRootPath, "Script", "backcaps-logistics-firebase-adminsdk-3s5ll-938599648b.json");
+            string scriptPath = Path.Combine(webRootPath, "Script", "JSON FILE");
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", scriptPath);
             projectid = "backcaps-logistics";
             firestoreDb = FirestoreDb.Create(projectid);
